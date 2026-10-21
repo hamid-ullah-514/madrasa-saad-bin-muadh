@@ -375,7 +375,7 @@ function initCopyButtons() {
             navigator.clipboard.writeText(targetText).then(() => {
                 const originalHtml = btn.innerHTML;
                 btn.innerHTML = `<i class="fa-solid fa-check"></i> کاپی ہو گیا!`;
-                btn.style.background = '#047857';
+                btn.style.background = 'var(--primary-700)';
                 btn.style.color = '#ffffff';
 
                 showToast(`کاپی کر لیا گیا: ${targetText}`);

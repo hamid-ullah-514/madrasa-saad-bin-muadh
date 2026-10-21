@@ -152,18 +152,18 @@ img {
 }
 
 /* ==========================================================================
-   TOP BAR (3D REVOLVING CIRCULAR TUBE / گول چکر سلنڈر اینیمیشن)
+   TOP BAR (SEAMLESS CONTINUOUS WRAP-AROUND NEWS TICKER)
    ========================================================================== */
 .top-bar {
-  background: radial-gradient(ellipse at 50% 50%, #032b1f 0%, #021a14 70%, #01110d 100%);
+  background: #021a14;
   color: #e2e8f0;
   font-size: 0.95rem;
-  padding-block: 0.4rem;
-  border-bottom: 2px solid rgba(245, 158, 11, 0.45);
+  padding-block: 0.35rem;
+  border-bottom: 1.5px solid rgba(245, 158, 11, 0.4);
   position: relative;
   z-index: 1010;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
 }
 
 .top-bar-ticker-container {
@@ -178,148 +178,76 @@ img {
   box-sizing: border-box;
 }
 
-/* Pinned Badge with 3D Spinning Wheel */
-.ticker-badge-chakar {
+/* Pinned Static Badge */
+.top-bar-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, rgba(217, 119, 6, 0.3) 0%, rgba(180, 83, 9, 0.15) 100%);
-  border: 1.5px solid #f59e0b;
+  gap: 0.45rem;
+  background: rgba(217, 119, 6, 0.22);
+  border: 1px solid rgba(245, 158, 11, 0.5);
   color: #fbbf24;
-  padding: 0.25rem 0.85rem;
+  padding: 0.2rem 0.75rem;
   border-radius: var(--radius-full);
-  font-size: 0.92rem;
+  font-size: 0.88rem;
   font-weight: 800;
   white-space: nowrap;
   flex-shrink: 0;
   z-index: 5;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.35);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
-.ticker-spin-wheel {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #34d399;
-  font-size: 1.05rem;
-  filter: drop-shadow(0 0 6px rgba(52, 211, 153, 0.7));
+.ticker-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background: #10b981;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10b981;
+  animation: pulseDot 1.5s infinite ease-in-out;
 }
 
-/* 3D Cylindrical Chamber / Tunnel Wrapper */
-.ticker-cylinder-wrap {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  position: relative;
-  background: linear-gradient(180deg, rgba(2, 44, 34, 0.75) 0%, rgba(1, 26, 20, 0.9) 50%, rgba(1, 15, 11, 0.95) 100%);
-  border: 1.5px solid rgba(245, 158, 11, 0.4);
-  border-radius: var(--radius-full);
-  padding: 0.18rem 0.35rem;
-  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.1), inset 0 -3px 8px rgba(0, 0, 0, 0.6), 0 2px 10px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  perspective: 1000px;
+@keyframes pulseDot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.6; }
 }
 
-/* 3D Portals at the Ends (باہر آنے والا اور اندر جانے والا دہانہ) */
-.cylinder-portal {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.18rem 0.6rem;
-  border-radius: var(--radius-full);
-  font-size: 0.8rem;
-  font-weight: 800;
-  white-space: nowrap;
-  flex-shrink: 0;
-  z-index: 6;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-  pointer-events: none;
-}
-
-/* Right Portal: باہر آنے والا دہانہ (Outward) */
-.portal-outward {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(6, 78, 59, 0.65) 100%);
-  border: 1.2px solid #10b981;
-  color: #a7f3d0;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.45);
-}
-
-.portal-outward .portal-icon {
-  color: #34d399;
-  font-size: 0.85rem;
-  animation: portalPulseOut 1.5s infinite ease-in-out;
-}
-
-@keyframes portalPulseOut {
-  0%, 100% { transform: scale(1) translateX(0); }
-  50% { transform: scale(1.3) translateX(3px); }
-}
-
-/* Left Portal: اندر جانے والا دہانہ (Inward) */
-.portal-inward {
-  background: linear-gradient(135deg, rgba(217, 119, 6, 0.4) 0%, rgba(180, 83, 9, 0.65) 100%);
-  border: 1.2px solid #f59e0b;
-  color: #fef3c7;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.45);
-}
-
-.portal-inward .portal-icon {
-  color: #fbbf24;
-  font-size: 0.85rem;
-  animation: portalPulseIn 1.5s infinite ease-in-out;
-}
-
-@keyframes portalPulseIn {
-  0%, 100% { transform: scale(1) translateX(0); }
-  50% { transform: scale(1.3) translateX(-3px); }
-}
-
-/* The Viewport with 3D Depth Masks */
+/* The Viewport with Edge Masks */
 .ticker-viewport {
   flex: 1;
   overflow: hidden;
   position: relative;
   white-space: nowrap;
-  mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 4%, black 96%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 2%, black 98%, transparent 100%);
   padding-block: 0.15rem;
 }
 
-/* The Revolving Track */
+/* The Revolving Track: Continuous Seamless Loop */
 .ticker-track {
   display: inline-flex;
   align-items: center;
-  gap: 1.15rem;
+  gap: 1.25rem;
   white-space: nowrap;
   will-change: transform;
-  animation: circularSlide3D 34s linear infinite;
-  transform-style: preserve-3d;
+  animation: seamlessLoopRTL 32s linear infinite;
 }
 
 .ticker-viewport:hover .ticker-track {
   animation-play-state: paused;
 }
 
-@keyframes circularSlide3D {
+.ticker-item {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+@keyframes seamlessLoopRTL {
   0% {
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
   }
   100% {
-    transform: translate3d(-50%, 0, 0);
+    transform: translateX(-50%);
   }
-}
-
-/* 3D Capsule Pill Styling */
-.chakar-pill {
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  cursor: pointer;
-}
-
-.chakar-pill:hover {
-  transform: scale(1.08) translateY(-2px);
-  box-shadow: 0 6px 18px rgba(245, 158, 11, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.3);
-  border-color: #fbbf24 !important;
 }
 
 .top-bar-pinned-controls {
@@ -2300,6 +2228,7 @@ body.theme-dark .public-expense-table th {
     border-color: rgba(245, 158, 11, 0.3);
   }
 
+  /* Compact Mobile Menu: Takes less than half the screen */
   .nav-menu {
     display: none;
     position: absolute;
@@ -2307,49 +2236,209 @@ body.theme-dark .public-expense-table th {
     left: 0;
     right: 0;
     background: var(--bg-surface);
-    flex-direction: column;
-    padding: 1rem 1.25rem 1.5rem;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.4rem;
+    padding: 0.65rem 0.85rem;
     border-bottom: 2px solid var(--gold-500);
-    box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.22);
     z-index: 1050;
-    max-height: 75vh;
+    max-height: 42vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    gap: 0.4rem;
+    border-radius: 0 0 18px 18px;
   }
 
   .nav-menu.mobile-open {
-    display: flex;
-    animation: fadeIn 0.25s ease-out;
+    display: grid;
+    animation: fadeIn 0.2s ease-out;
   }
 
   .nav-link {
-    font-size: 1.18rem;
-    padding: 0.65rem 0.85rem;
-    width: 100%;
-    text-align: right;
-    border-radius: var(--radius-sm);
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.45rem 0.6rem;
+    text-align: center;
+    background: rgba(6, 78, 59, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+    transition: background 0.2s, color 0.2s;
   }
 
   body.theme-dark .nav-link {
-    border-bottom-color: rgba(255,255,255,0.06);
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(255,255,255,0.08);
+  }
+
+  .nav-link:hover, .nav-link:active {
+    background: var(--gold-500);
+    color: #000000;
   }
 
   .nav-cta-btn {
-    width: 100%;
+    grid-column: span 2;
     justify-content: center;
-    font-size: 1.12rem;
-    padding: 0.75rem 1rem;
-    margin-top: 0.65rem;
+    font-size: 1rem;
+    padding: 0.55rem 0.85rem;
+    margin-top: 0.2rem;
   }
 
   .admin-nav-btn {
-    width: 100%;
+    grid-column: span 2;
     justify-content: center;
-    font-size: 1.05rem;
-    padding: 0.6rem 1rem;
+    font-size: 0.92rem;
+    padding: 0.4rem 0.85rem;
     text-align: center;
+  }
+
+  /* Financial Transparency: 2x2 Grid with Full Text on Mobile */
+  .finance-transparency-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .fin-card {
+    padding: 0.85rem;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .fin-card-icon {
+    width: 38px;
+    height: 38px;
+    font-size: 1.15rem;
+  }
+
+  .fin-card-info {
+    width: 100%;
+  }
+
+  .fin-card-lbl {
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .fin-card-val {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-block: 0.15rem;
+  }
+
+  .fin-card-sub {
+    font-size: 0.72rem;
+    display: block;
+    line-height: 1.25;
+    color: var(--text-muted);
+  }
+
+  /* Public Expense Table: Full Screen Mobile Cards with zero horizontal scrolling */
+  .public-expenses-box {
+    padding: 0.85rem;
+  }
+
+  .table-responsive {
+    overflow-x: visible;
+  }
+
+  .public-expense-table,
+  .public-expense-table thead,
+  .public-expense-table tbody,
+  .public-expense-table th,
+  .public-expense-table td,
+  .public-expense-table tr {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .public-expense-table thead {
+    display: none;
+  }
+
+  .public-expense-table tbody tr {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border-color);
+    border-radius: var(--radius-md);
+    padding: 0.85rem;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+  }
+
+  .public-expense-table td {
+    padding: 0.35rem 0;
+    border: none;
+    border-bottom: 1px dashed rgba(0,0,0,0.06);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.02rem;
+  }
+
+  body.theme-dark .public-expense-table tbody tr {
+    border-color: rgba(255,255,255,0.08);
+  }
+
+  body.theme-dark .public-expense-table td {
+    border-bottom-color: rgba(255,255,255,0.06);
+  }
+
+  .public-expense-table td:last-child {
+    border-bottom: none;
+  }
+
+  .public-expense-table td:nth-child(1)::before {
+    content: "📅 تاریخ:";
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  .public-expense-table td:nth-child(2) {
+    display: block;
+    margin: 0.3rem 0;
+    font-size: 1.15rem;
+    color: var(--primary-900);
+    line-height: 1.45;
+    word-break: break-word;
+  }
+
+  body.theme-dark .public-expense-table td:nth-child(2) {
+    color: var(--gold-400);
+  }
+
+  .public-expense-table td:nth-child(2)::before {
+    content: "📝 تفصیل: ";
+    font-weight: 700;
+    color: var(--gold-600);
+    display: inline-block;
+    margin-left: 0.3rem;
+  }
+
+  .public-expense-table td:nth-child(3)::before {
+    content: "💰 کٹوتی رقم:";
+    font-weight: 700;
+    color: #dc2626;
+    font-size: 0.92rem;
+  }
+
+  .public-expense-table td:nth-child(4)::before {
+    content: "🏷️ کیٹیگری:";
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+
+  .public-expense-table td:nth-child(5)::before {
+    content: "🧾 رسید / بل:";
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.92rem;
   }
 
   /* Grid Layouts to 1 Column */

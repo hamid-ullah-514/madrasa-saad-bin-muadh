@@ -23,123 +23,95 @@
 <body class="theme-light">
 
     <!-- ====================================================================
-         TOP ANNOUNCEMENT BAR (3D REVOLVING CIRCULAR TUBE / گول چکر سلنڈر)
+         TOP ANNOUNCEMENT BAR (SEAMLESS CONTINUOUS WRAP-AROUND LOOP)
          ==================================================================== -->
     <div class="top-bar" id="topAnnouncementBar">
         <div class="top-bar-ticker-container">
-            <!-- Pinned Static Badge: گول چکر اعلانات -->
-            <div class="ticker-badge-pinned ticker-badge-chakar" title="3D گول چکر لائیو پٹی">
-                <span class="ticker-spin-wheel">
-                    <i class="fa-solid fa-arrows-spin fa-spin"></i>
-                </span>
-                <span class="chakar-title">گول چکر اعلانات:</span>
+            <!-- Pinned Static Badge: اعلانات -->
+            <div class="top-bar-badge" title="مدرسہ سعد بن معاذ اہم اعلانات">
+                <span class="ticker-pulse-dot"></span>
+                <i class="fa-solid fa-bullhorn text-gold"></i>
+                <span class="badge-text">اہم اعلانات:</span>
             </div>
 
-            <!-- 3D Cylindrical Chamber / Tunnel Wrapper -->
-            <div class="ticker-cylinder-wrap">
-                <!-- Outward Portal (Right Portal: جہاں سے باہر نکل رہا ہو) -->
-                <div class="cylinder-portal portal-outward" title="ایک طرف سے باہر نکل رہا ہے">
-                    <span class="portal-icon"><i class="fa-solid fa-arrow-turn-down fa-rotate-90"></i></span>
-                    <span class="portal-text">باہر</span>
-                </div>
+            <!-- Rolling Viewport (Continuous Seamless Loop) -->
+            <div class="ticker-viewport" id="tickerViewport">
+                <div class="ticker-track" id="tickerTrack">
+                    <!-- Set 1 -->
+                    <div class="ticker-item">
+                        <span class="top-pill top-pill-gold">
+                            <i class="fa-solid fa-mosque"></i> مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-user-tie text-gold"></i> مہتمم: <strong>حضرت مولانا عجب خان صاحب</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-location-dot text-gold"></i> پتہ: <strong>مریچے پتا، عربی مردان (خیبر پختونخوا)</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill top-pill-phone">
+                            <i class="fa-solid fa-phone"></i> رابطہ: <a href="tel:03409132851" dir="ltr">0340-9132851</a>
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill" style="border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                            <i class="fa-solid fa-mobile-screen-button"></i> ایزی پیسہ: <strong dir="ltr">0319-9532091</strong> (محمد امین)
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-chart-pie text-gold"></i> کل رقبہ: <strong>36 مرلے (زیرِ تعمیر اسلامی و تعلیمی کمپلیکس)</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill top-pill-gold">
+                            <i class="fa-solid fa-star-and-crescent"></i> صدقہ جاریہ: آپ کا تعاون حفظِ قرآن اور مسجد کی تعمیر میں صرف ہوگا
+                        </span>
+                    </div>
 
-                <!-- Rolling Viewport (Infinite Smooth 3D Circular Loop) -->
-                <div class="ticker-viewport" id="tickerViewport">
-                    <div class="ticker-track" id="tickerTrack">
-                        <!-- Set 1 -->
-                        <div class="ticker-item">
-                            <span class="top-pill top-pill-gold chakar-pill">
-                                <i class="fa-solid fa-mosque"></i> مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات
-                            </span>
-                        </div>
-                        <div class="ticker-item">
-                            <span class="top-pill chakar-pill">
-                                <i class="fa-solid fa-user-tie text-gold"></i> مہتمم: <strong>حضرت مولانا عجب خان صاحب</strong>
-                            </span>
-                        </div>
-                        <div class="ticker-item">
-                            <span class="top-pill chakar-pill">
-                                <i class="fa-solid fa-location-dot text-gold"></i> پتہ: <strong>مریچے پتا، عربی مردان (خیبر پختونخوا)</strong>
-                            </span>
-                        </div>
-                        <div class="ticker-item">
-                            <span class="top-pill top-pill-phone chakar-pill">
-                                <i class="fa-solid fa-phone"></i> رابطہ: <a href="tel:03409132851" dir="ltr">0340-9132851</a>
-                            </span>
-                        </div>
-                        <div class="ticker-item">
-                            <span class="top-pill chakar-pill" style="border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.15); color: #34d399;">
-                                <i class="fa-solid fa-mobile-screen-button"></i> ایزی پیسہ: <strong dir="ltr">0319-9532091</strong> (محمد امین)
-                            </span>
-                        </div>
-                        <div class="ticker-item">
-                            <span class="top-pill chakar-pill">
-                                <i class="fa-solid fa-chart-pie text-gold"></i> کل رقبہ: <strong>36 مرلے (زیرِ تعمیر اسلامی و تعلیمی کمپلیکس)</strong>
-                            </span>
-                        </div>
-                        <div class="ticker-item">
-                            <span class="top-pill top-pill-gold chakar-pill">
-                                <i class="fa-solid fa-star-and-crescent"></i> صدقہ جاریہ: آپ کا تعاون حفظِ قرآن اور مسجد کی تعمیر میں صرف ہوگا
-                            </span>
-                        </div>
-
-                        <!-- Duplicate Set 2 for Infinite Seamless Loop -->
-                        <div class="ticker-item" aria-hidden="true">
-                            <span class="top-pill top-pill-gold chakar-pill">
-                                <i class="fa-solid fa-mosque"></i> مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات
-                            </span>
-                        </div>
-                        <div class="ticker-item" aria-hidden="true">
-                            <span class="top-pill chakar-pill">
-                                <i class="fa-solid fa-user-tie text-gold"></i> مہتمم: <strong>حضرت مولانا عجب خان صاحب</strong>
-                            </span>
-                        </div>
-                        <div class="ticker-item" aria-hidden="true">
-                            <span class="top-pill chakar-pill">
-                                <i class="fa-solid fa-location-dot text-gold"></i> پتہ: <strong>مریچے پتا، عربی مردان (خیبر پختونخوا)</strong>
-                            </span>
-                        </div>
-                        <div class="ticker-item" aria-hidden="true">
-                            <span class="top-pill top-pill-phone chakar-pill">
-                                <i class="fa-solid fa-phone"></i> رابطہ: <a href="tel:03409132851" dir="ltr">0340-9132851</a>
-                            </span>
-                        </div>
-                        <div class="ticker-item" aria-hidden="true">
-                            <span class="top-pill chakar-pill" style="border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.15); color: #34d399;">
-                                <i class="fa-solid fa-mobile-screen-button"></i> ایزی پیسہ: <strong dir="ltr">0319-9532091</strong> (محمد امین)
-                            </span>
-                        </div>
-                        <div class="ticker-item" aria-hidden="true">
-                            <span class="top-pill chakar-pill">
-                                <i class="fa-solid fa-chart-pie text-gold"></i> کل رقبہ: <strong>36 مرلے (زیرِ تعمیر اسلامی و تعلیمی کمپلیکس)</strong>
-                            </span>
-                        </div>
-                        <div class="ticker-item" aria-hidden="true">
-                            <span class="top-pill top-pill-gold chakar-pill">
-                                <i class="fa-solid fa-star-and-crescent"></i> صدقہ جاریہ: آپ کا تعاون حفظِ قرآن اور مسجد کی تعمیر میں صرف ہوگا
-                            </span>
-                        </div>
+                    <!-- Duplicate Set 2 (Follows seamlessly right behind with zero gap!) -->
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill top-pill-gold">
+                            <i class="fa-solid fa-mosque"></i> مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-user-tie text-gold"></i> مہتمم: <strong>حضرت مولانا عجب خان صاحب</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-location-dot text-gold"></i> پتہ: <strong>مریچے پتا، عربی مردان (خیبر پختونخوا)</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill top-pill-phone">
+                            <i class="fa-solid fa-phone"></i> رابطہ: <a href="tel:03409132851" dir="ltr">0340-9132851</a>
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill" style="border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                            <i class="fa-solid fa-mobile-screen-button"></i> ایزی پیسہ: <strong dir="ltr">0319-9532091</strong> (محمد امین)
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-chart-pie text-gold"></i> کل رقبہ: <strong>36 مرلے (زیرِ تعمیر اسلامی و تعلیمی کمپلیکس)</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill top-pill-gold">
+                            <i class="fa-solid fa-star-and-crescent"></i> صدقہ جاریہ: آپ کا تعاون حفظِ قرآن اور مسجد کی تعمیر میں صرف ہوگا
+                        </span>
                     </div>
                 </div>
-
-                <!-- Inward Portal (Left Portal: جہاں سے اندر داخل ہو رہا ہو) -->
-                <div class="cylinder-portal portal-inward" title="دوسری طرف سے اندر داخل ہو رہا ہے">
-                    <span class="portal-text">اندر</span>
-                    <span class="portal-icon"><i class="fa-solid fa-arrow-turn-up fa-rotate-90"></i></span>
-                </div>
             </div>
-
-            <!-- Pinned Static Controls (Left side in RTL) -->
-            <div class="top-bar-pinned-controls">
-                <a href="https://wa.me/923409132851" target="_blank" class="top-pill js-mohtamim-wa" style="background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.45); color: #4ade80;">
-                    <i class="fa-brands fa-whatsapp"></i> واٹس ایپ
-                </a>
-                <button id="themeToggle" class="theme-switch-btn" title="لائٹ یا ڈارک موڈ تبدیل کریں">
-                    <i class="fa-solid fa-moon"></i> <span>ڈارک موڈ</span>
-                </button>
-            </div>
-        </div>
-    </div>
 
             <!-- Pinned Static Controls (Left side in RTL) -->
             <div class="top-bar-pinned-controls">

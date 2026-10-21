@@ -117,21 +117,79 @@ function initNavigation() {
 }
 
 /* ==========================================================================
-   DYNAMIC DATA & DONATION CALCULATIONS
+   DYNAMIC DATA, EXPENSES, CUSTOM CONTENT & PHOTOS
    ========================================================================== */
 function initDynamicData() {
     const data = getMadrasaData();
 
-    // Update announcement ticker
+    // 1. Dynamic Custom Text
+    const customTextRaw = localStorage.getItem('madrasa_custom_text');
+    if (customTextRaw) {
+        try {
+            const ct = JSON.parse(customTextRaw);
+            if (ct.heroTitle) {
+                document.querySelectorAll('.hero-main-title, .brand-main-title').forEach(el => el.innerHTML = ct.heroTitle);
+            }
+            if (ct.heroDesc) {
+                const hd = document.querySelector('.hero-desc');
+                if (hd) hd.innerHTML = ct.heroDesc;
+            }
+            if (ct.aboutDesc) {
+                const ad = document.querySelector('#about p');
+                if (ad) ad.innerHTML = ct.aboutDesc;
+            }
+            if (ct.address) {
+                data.address = ct.address;
+            }
+        } catch (e) {
+            console.error("Failed to parse custom text:", e);
+        }
+    }
+
+    // 2. Dynamic Custom Photos (Base64 / URL)
+    const photosRaw = localStorage.getItem('madrasa_custom_photos');
+    if (photosRaw) {
+        try {
+            const photos = JSON.parse(photosRaw);
+            if (photos.photo1) {
+                document.querySelectorAll('img[src*="madrasa_latest_1"], .hero-featured-image').forEach(img => {
+                    img.src = photos.photo1;
+                    img.setAttribute('data-img-src', photos.photo1);
+                });
+            }
+            if (photos.photo2) {
+                document.querySelectorAll('img[src*="madrasa_latest_2"]').forEach(img => {
+                    img.src = photos.photo2;
+                    img.setAttribute('data-img-src', photos.photo2);
+                });
+            }
+            if (photos.photo3) {
+                document.querySelectorAll('img[src*="official_receipt_slip"]').forEach(img => {
+                    img.src = photos.photo3;
+                    img.setAttribute('data-img-src', photos.photo3);
+                });
+            }
+            if (photos.photo4) {
+                document.querySelectorAll('img[src*="madrasa_latest_4"]').forEach(img => {
+                    img.src = photos.photo4;
+                    img.setAttribute('data-img-src', photos.photo4);
+                });
+            }
+        } catch (e) {
+            console.error("Failed to parse custom photos:", e);
+        }
+    }
+
+    // 3. Update announcement ticker
     const tickerEl = document.getElementById('dynamicAnnouncement');
     if (tickerEl) tickerEl.textContent = data.announcement;
 
-    // Update addresses
+    // 4. Update addresses
     document.querySelectorAll('.js-madrasa-address').forEach(el => {
         el.textContent = data.address;
     });
 
-    // Update Mohtamim phone (0340-9132851)
+    // 5. Update Mohtamim phone (0340-9132851)
     document.querySelectorAll('.js-mohtamim-phone').forEach(el => {
         el.textContent = data.mohtamimPhone;
     });
@@ -148,7 +206,7 @@ function initDynamicData() {
         el.href = `https://wa.me/${target}?text=${msg}`;
     });
 
-    // Update EasyPaisa info (0319-9532091, Title: Muhammad Ameen)
+    // 6. Update EasyPaisa info (0319-9532091, Title: Muhammad Ameen)
     document.querySelectorAll('.js-easypaisa-number').forEach(el => {
         el.textContent = data.easyPaisaNumber;
     });
@@ -157,20 +215,52 @@ function initDynamicData() {
         el.textContent = data.easyPaisaTitle;
     });
 
-    // Update Donation numbers
-    const targetEl = document.getElementById('donationTargetDisplay');
-    const raisedEl = document.getElementById('donationRaisedDisplay');
-    const remainingEl = document.getElementById('donationRemainingDisplay');
-    const progressBar = document.getElementById('donationProgressBar');
-    const percentEl = document.getElementById('donationPercentDisplay');
+    // 7. Ledgers & Total Expenses Calculations
+    const incomeRaw = localStorage.getItem('madrasa_income_ledger');
+    const expenseRaw = localStorage.getItem('madrasa_expense_ledger');
+    let incomeList = incomeRaw ? JSON.parse(incomeRaw) : null;
+    let expenseList = expenseRaw ? JSON.parse(expenseRaw) : null;
 
-    const target = data.targetDonation;
-    const raised = data.raisedDonation;
+    if (!incomeList) {
+        incomeList = [
+            { id: 1, date: "2026-10-18", donor: "الحاج سمیع اللہ خان", amount: 500000, category: "صدقہ جاریہ (تعمیراتی فنڈ)", method: "میزان بینک", receiptNo: "TID: 982318", notes: "مسجد معز اللہ خان کی چھت کے لیے" },
+            { id: 2, date: "2026-10-19", donor: "محترم طارق محمود", amount: 150000, category: "زیرِ تعمیر مسجد معز اللہ خان", method: "ایزی پیسہ", receiptNo: "TID: 472911", notes: "برائے ایصالِ ثواب والدین" },
+            { id: 3, date: "2026-10-20", donor: "فضل الرحمن صاحب", amount: 75000, category: "سیمنٹ و اینٹوں کا فنڈ", method: "نقد رقم (کیش)", receiptNo: "رسید # 1042", notes: "50 بوریاں سیمنٹ کی مد میں" }
+        ];
+    }
+
+    if (!expenseList) {
+        expenseList = [
+            { id: 1, date: "2026-10-15", title: "سیمنٹ کی 200 بوریاں (فوجی سیمنٹ)", amount: 270000, category: "سیمنٹ، ریت و بجری", billNo: "بل # 412 (خیبر ہارڈویئر)", paidBy: "عجب خان" },
+            { id: 2, date: "2026-10-17", title: "لنٹر کے لیے سریا (60 گریڈ)", amount: 480000, category: "لوہا و سریا", billNo: "بل # 891 (مردان سٹیل)", paidBy: "امین صاحب" },
+            { id: 3, date: "2026-10-19", title: "مستری اور مزدوروں کی ہفتہ وار اجرت", amount: 65000, category: "مستری و مزدوروں کی اجرت", billNo: "رسید # 55", paidBy: "عجب خان" },
+            { id: 4, date: "2026-10-20", title: "ریت کی 4 ٹرالیاں اور بجری", amount: 85000, category: "سیمنٹ، ریت و بجری", billNo: "بل # 203", paidBy: "عجب خان" }
+        ];
+    }
+
+    const calculatedIncome = incomeList.reduce((acc, item) => acc + (Number(item.amount) || 0), 0);
+    const calculatedExpense = expenseList.reduce((acc, item) => acc + (Number(item.amount) || 0), 0);
+
+    const raised = (data.raisedDonation && data.raisedDonation > calculatedIncome) ? data.raisedDonation : calculatedIncome;
+    const totalExpense = (data.totalExpense && data.totalExpense > calculatedExpense) ? data.totalExpense : calculatedExpense;
+    const balance = Math.max(0, raised - totalExpense);
+    const target = data.targetDonation || 8500000;
     const remaining = Math.max(0, target - raised);
     const percent = Math.min(100, Math.round((raised / target) * 100));
 
+    // Update Donation numbers in Transparency Section
+    const targetEl = document.getElementById('donationTargetDisplay');
+    const raisedEl = document.getElementById('donationRaisedDisplay');
+    const remainingEl = document.getElementById('donationRemainingDisplay');
+    const expenseEl = document.getElementById('donationExpenseDisplay');
+    const balanceEl = document.getElementById('donationBalanceDisplay');
+    const progressBar = document.getElementById('donationProgressBar');
+    const percentEl = document.getElementById('donationPercentDisplay');
+
     if (targetEl) targetEl.textContent = `PKR ${target.toLocaleString('en-US')}`;
     if (raisedEl) raisedEl.textContent = `PKR ${raised.toLocaleString('en-US')}`;
+    if (expenseEl) expenseEl.textContent = `PKR ${totalExpense.toLocaleString('en-US')}`;
+    if (balanceEl) balanceEl.textContent = `PKR ${balance.toLocaleString('en-US')}`;
     if (remainingEl) remainingEl.textContent = `PKR ${remaining.toLocaleString('en-US')}`;
     if (percentEl) percentEl.textContent = `${percent}%`;
 
@@ -178,6 +268,20 @@ function initDynamicData() {
         setTimeout(() => {
             progressBar.style.width = `${percent}%`;
         }, 300);
+    }
+
+    // Populate Public Expense Breakdown Table
+    const publicExpBody = document.getElementById('publicExpenseTableBody');
+    if (publicExpBody) {
+        publicExpBody.innerHTML = expenseList.slice(0, 6).map(item => `
+            <tr>
+                <td dir="ltr" style="font-weight:700;">${item.date}</td>
+                <td><strong>${item.title}</strong></td>
+                <td style="color:#dc2626; font-weight:800; font-family:var(--font-en)!important;">${Number(item.amount).toLocaleString('en-US')} روپے</td>
+                <td><span class="top-pill" style="font-size:0.85rem; padding:0.15rem 0.6rem; background:rgba(239,68,68,0.1); color:#dc2626; border-color:rgba(239,68,68,0.3); font-weight:700;">${item.category || 'تعمیراتی خرچ'}</span></td>
+                <td style="font-size:0.95rem;">${item.billNo || item.paidBy || '-'}</td>
+            </tr>
+        `).join('');
     }
 
     // Update under-construction progress bar

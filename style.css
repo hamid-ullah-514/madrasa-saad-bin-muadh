@@ -1815,6 +1815,169 @@ body.theme-dark .edu-card h3 {
   transform: translateY(0);
 }
 
+/* Financial Transparency & Expense Breakdown */
+.finance-transparency-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.fin-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.fin-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.fin-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 4px;
+}
+
+.fin-card-target::before { background: var(--gold-500); }
+.fin-card-raised::before { background: var(--primary-600); }
+.fin-card-expense::before { background: #dc2626; }
+.fin-card-balance::before { background: #0284c7; }
+
+.fin-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+}
+
+.fin-card-target .fin-card-icon { background: rgba(245, 158, 11, 0.15); color: var(--gold-600); }
+.fin-card-raised .fin-card-icon { background: rgba(16, 185, 129, 0.15); color: var(--primary-700); }
+.fin-card-expense .fin-card-icon { background: rgba(239, 68, 68, 0.15); color: #dc2626; }
+.fin-card-balance .fin-card-icon { background: rgba(2, 132, 199, 0.15); color: #0284c7; }
+
+.fin-card-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.fin-card-lbl {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.fin-card-val {
+  font-size: 1.65rem;
+  font-weight: 800;
+  font-family: var(--font-en) !important;
+  line-height: 1.25;
+  margin-block: 0.2rem;
+}
+
+.fin-card-target .fin-card-val { color: var(--gold-600); }
+.fin-card-raised .fin-card-val { color: var(--primary-700); }
+.fin-card-expense .fin-card-val { color: #dc2626; }
+.fin-card-balance .fin-card-val { color: #0284c7; }
+
+.fin-card-sub {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.progress-bar-container-card {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.progress-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.donation-progress-track {
+  height: 16px;
+  background: rgba(0,0,0,0.06);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+body.theme-dark .donation-progress-track {
+  background: rgba(255,255,255,0.08);
+}
+
+.donation-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-500), var(--primary-500));
+  border-radius: var(--radius-full);
+  transition: width 1s ease-in-out;
+}
+
+.table-responsive {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.public-expenses-box {
+  background: var(--bg-surface);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.public-expense-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.public-expense-table th {
+  background: rgba(6, 78, 59, 0.05);
+  color: var(--primary-900);
+  font-weight: 800;
+  padding: 0.75rem 1rem;
+}
+
+body.theme-dark .public-expense-table th {
+  background: rgba(245, 158, 11, 0.1);
+  color: var(--gold-400);
+}
+
+.public-expense-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 1.05rem;
+}
+
 /* Base Layout Helpers */
 .hero-roles-card {
   background: rgba(0,0,0,0.32);

@@ -78,6 +78,7 @@
                 <a href="#four-photos" class="nav-link">اصل رسید و تصاویر</a>
                 <a href="#education" class="nav-link">تعلیمی نظام</a>
                 <a href="#future-plan" class="nav-link">مستقبل کا منصوبہ</a>
+                <a href="#financial-transparency" class="nav-link">کل اخراجات و فنڈز</a>
                 <a href="#bank-details" class="nav-link">ایزی پیسہ و اکاؤنٹس</a>
                 <a href="#donation-form-sec" class="nav-cta-btn">
                     <i class="fa-solid fa-hand-holding-heart"></i> عطیہ فارم و باضابطہ رسید
@@ -593,6 +594,103 @@
                             <i class="fa-solid fa-expand"></i> اکاؤنٹ سلپ بڑی دیکھیں
                         </button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================================
+         FINANCIAL TRANSPARENCY, TOTAL EXPENSES & DONATION PROGRESS
+         ==================================================================== -->
+    <section class="section section-bg-alt" id="financial-transparency">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtag">
+                    <i class="fa-solid fa-chart-line"></i> مالیاتی شفافیت و حساب کتاب
+                </span>
+                <h2 class="section-title">
+                    تعمیراتی فنڈز، <span>اب تک کے کل اخراجات</span> اور درکار رقم کا خلاصہ
+                </h2>
+                <p class="section-desc">
+                    مدرسے کی تعمیر پر اب تک کتنا خرچہ ہوا ہے، کتنی رقم جمع ہوئی ہے اور مزید کتنی درکار ہے تاکہ ہر مخیر اور ہمدرد مکمل شفافیت سے حساب دیکھ سکے:
+                </p>
+            </div>
+
+            <!-- Transparency Cards -->
+            <div class="finance-transparency-grid">
+                <div class="fin-card fin-card-target">
+                    <div class="fin-card-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="fin-card-info">
+                        <span class="fin-card-lbl">کل درکار تعمیراتی ہدف</span>
+                        <div class="fin-card-val" id="donationTargetDisplay">PKR 8,500,000</div>
+                        <span class="fin-card-sub">36 مرلے ماسٹر پلان کی تکمیل کے لیے</span>
+                    </div>
+                </div>
+
+                <div class="fin-card fin-card-raised">
+                    <div class="fin-card-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                    <div class="fin-card-info">
+                        <span class="fin-card-lbl">اب تک جمع شدہ عطیات</span>
+                        <div class="fin-card-val" id="donationRaisedDisplay">PKR 5,120,000</div>
+                        <span class="fin-card-sub">مخیرینِ کرام کے تعاون سے حاصل شدہ</span>
+                    </div>
+                </div>
+
+                <div class="fin-card fin-card-expense">
+                    <div class="fin-card-icon"><i class="fa-solid fa-receipt"></i></div>
+                    <div class="fin-card-info">
+                        <span class="fin-card-lbl">اب تک کے کل تعمیراتی اخراجات</span>
+                        <div class="fin-card-val" id="donationExpenseDisplay">PKR 2,150,000</div>
+                        <span class="fin-card-sub">سیمنٹ، سریا، اینٹیں، ریت اور مزدوروں کی ادائیگی</span>
+                    </div>
+                </div>
+
+                <div class="fin-card fin-card-balance">
+                    <div class="fin-card-icon"><i class="fa-solid fa-vault"></i></div>
+                    <div class="fin-card-info">
+                        <span class="fin-card-lbl">موجودہ خالص فنڈز / بیلنس</span>
+                        <div class="fin-card-val" id="donationBalanceDisplay">PKR 2,970,000</div>
+                        <span class="fin-card-sub">آمدن منہا اخراجات (خزانے میں محفوظ)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Funding Progress Bar Box -->
+            <div class="progress-bar-container-card">
+                <div class="progress-bar-header">
+                    <span><strong>فنڈنگ کی موجودہ پیشرفت:</strong> <span id="donationPercentDisplay">60%</span> فنڈز حاصل ہو چکے ہیں</span>
+                    <span><strong>مزید مطلوبہ رقم:</strong> <strong id="donationRemainingDisplay" style="color:var(--gold-600);">PKR 3,380,000</strong></span>
+                </div>
+                <div class="donation-progress-track">
+                    <div class="donation-progress-fill" id="donationProgressBar" style="width: 60%;"></div>
+                </div>
+            </div>
+
+            <!-- Recent Expenses Public Ledger Summary -->
+            <div class="public-expenses-box">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+                    <h3 style="font-size:1.45rem; color:var(--primary-900); font-weight:800;">
+                        <i class="fa-solid fa-file-invoice-dollar text-gold"></i> حالیہ تعمیراتی اخراجات و کٹوتیاں (عوامی شفافیت)
+                    </h3>
+                    <span class="top-pill-gold" style="font-size:0.88rem; border-radius:50px;">
+                        تصدیق شدہ بلوں اور رسیدوں کے ساتھ ریکارڈ
+                    </span>
+                </div>
+                <div class="table-responsive">
+                    <table class="public-expense-table">
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>تفصیلِ اخراجات / میٹیریل</th>
+                                <th>کٹوتی رقم</th>
+                                <th>کیٹیگری</th>
+                                <th>بل نمبر / رسید</th>
+                            </tr>
+                        </thead>
+                        <tbody id="publicExpenseTableBody">
+                            <!-- Populated dynamically from expense ledger -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

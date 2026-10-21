@@ -23,30 +23,99 @@
 <body class="theme-light">
 
     <!-- ====================================================================
-         TOP ANNOUNCEMENT BAR (SINGLE COMPACT HORIZONTAL LINE)
+         TOP ANNOUNCEMENT BAR (ANIMATED LUXURY ROLLING NEWS TICKER)
          ==================================================================== -->
-    <div class="top-bar">
-        <div class="container top-bar-flex">
-            <!-- Left Info Pills (Right side in RTL) -->
-            <div class="top-bar-left-group">
-                <span class="top-pill top-pill-gold">
-                    <i class="fa-solid fa-star-and-crescent"></i> بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
-                </span>
-                <span class="top-pill">
-                    <i class="fa-solid fa-user-tie"></i> مہتمم: <strong>مولانا عجب خان صاحب</strong>
-                </span>
-                <span class="top-pill">
-                    <i class="fa-solid fa-location-dot text-gold"></i> پتہ: <strong>خاندان ٹاؤن، جمال گڑھی، مردان</strong>
-                </span>
+    <div class="top-bar" id="topAnnouncementBar">
+        <div class="top-bar-ticker-container">
+            <!-- Pinned Static Badge (Right side in RTL) -->
+            <div class="ticker-badge-pinned">
+                <span class="ticker-pulse-dot"></span>
+                <i class="fa-solid fa-bullhorn text-gold"></i>
+                <span>اہم اعلانات:</span>
             </div>
 
-            <!-- Right Contacts & Theme Toggle (Left side in RTL) -->
-            <div class="top-bar-right-group">
-                <span class="top-pill top-pill-phone" title="مہتمم صاحب کا رابطہ نمبر (صرف کال و معلومات)">
-                    <i class="fa-solid fa-phone"></i> مہتمم:
-                    <a href="tel:03409132851" class="js-mohtamim-link" dir="ltr">0340-9132851</a>
-                </span>
-                <a href="https://wa.me/923409132851" class="top-pill js-mohtamim-wa" target="_blank" style="background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.45); color: #4ade80;">
+            <!-- Rolling Viewport (Infinite Smooth Marquee) -->
+            <div class="ticker-viewport" id="tickerViewport">
+                <div class="ticker-track" id="tickerTrack">
+                    <!-- Set 1 -->
+                    <div class="ticker-item">
+                        <span class="top-pill top-pill-gold">
+                            <i class="fa-solid fa-mosque"></i> مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-user-tie text-gold"></i> مہتمم: <strong>حضرت مولانا عجب خان صاحب</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-location-dot text-gold"></i> پتہ: <strong>مریچے پتا، عربی مردان (خیبر پختونخوا)</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill top-pill-phone">
+                            <i class="fa-solid fa-phone"></i> رابطہ: <a href="tel:03409132851" dir="ltr">0340-9132851</a>
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill" style="border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                            <i class="fa-solid fa-mobile-screen-button"></i> ایزی پیسہ: <strong dir="ltr">0319-9532091</strong> (محمد امین)
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-chart-pie text-gold"></i> کل رقبہ: <strong>36 مرلے (زیرِ تعمیر اسلامی و تعلیمی کمپلیکس)</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item">
+                        <span class="top-pill top-pill-gold">
+                            <i class="fa-solid fa-star-and-crescent"></i> صدقہ جاریہ: آپ کا تعاون حفظِ قرآن اور مسجد کی تعمیر میں صرف ہوگا
+                        </span>
+                    </div>
+
+                    <!-- Duplicate Set 2 for Infinite Seamless Loop -->
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill top-pill-gold">
+                            <i class="fa-solid fa-mosque"></i> مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-user-tie text-gold"></i> مہتمم: <strong>حضرت مولانا عجب خان صاحب</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-location-dot text-gold"></i> پتہ: <strong>مریچے پتا، عربی مردان (خیبر پختونخوا)</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill top-pill-phone">
+                            <i class="fa-solid fa-phone"></i> رابطہ: <a href="tel:03409132851" dir="ltr">0340-9132851</a>
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill" style="border-color: rgba(16, 185, 129, 0.45); background: rgba(16, 185, 129, 0.15); color: #34d399;">
+                            <i class="fa-solid fa-mobile-screen-button"></i> ایزی پیسہ: <strong dir="ltr">0319-9532091</strong> (محمد امین)
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill">
+                            <i class="fa-solid fa-chart-pie text-gold"></i> کل رقبہ: <strong>36 مرلے (زیرِ تعمیر اسلامی و تعلیمی کمپلیکس)</strong>
+                        </span>
+                    </div>
+                    <div class="ticker-item" aria-hidden="true">
+                        <span class="top-pill top-pill-gold">
+                            <i class="fa-solid fa-star-and-crescent"></i> صدقہ جاریہ: آپ کا تعاون حفظِ قرآن اور مسجد کی تعمیر میں صرف ہوگا
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pinned Static Controls (Left side in RTL) -->
+            <div class="top-bar-pinned-controls">
+                <a href="https://wa.me/923409132851" target="_blank" class="top-pill js-mohtamim-wa" style="background: rgba(37, 211, 102, 0.15); border-color: rgba(37, 211, 102, 0.45); color: #4ade80;">
                     <i class="fa-brands fa-whatsapp"></i> واٹس ایپ
                 </a>
                 <button id="themeToggle" class="theme-switch-btn" title="لائٹ یا ڈارک موڈ تبدیل کریں">
@@ -1136,6 +1205,107 @@
             </a>
         </div>
     </footer>
+
+    <!-- ====================================================================
+         FLOATING WHATSAPP BUTTON (PULSING GLOW & DIRECT CHAT)
+         ==================================================================== -->
+    <a href="https://wa.me/923409132851?text=%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%DA%A9%D9%85!%20%D9%85%D8%AF%D8%B1%D8%B3%D9%87%20%D8%B3%D8%B9%D8%AF%20%D8%A8%D9%86%20%D9%85%D8%B9%D8%A7%D8%B0%20%DA%A9%DB%92%20%D8%A8%D8%A7%D8%B1%DB%92%20%D9%85%DB%8C%DA%BA%20%D9%85%D8%B9%D9%84%D9%88%D9%85%D8%A7%D8%AA%20%D9%88%20%D8%AA%D8%B9%D8%A7%D9%88%D9%86%20%DA%A9%D8%B1%D9%86%D8%A7%20%DA%86%D8%A7%D8%AD%D8%AA%D8%A7%20%DB%81%D9%88%DA%BA%DB%94" 
+       target="_blank" 
+       rel="noopener noreferrer" 
+       class="floating-whatsapp-btn" 
+       id="floatingWhatsApp" 
+       aria-label="براہِ راست واٹس ایپ پر رابطہ">
+        <span class="floating-wa-radar"></span>
+        <i class="fa-brands fa-whatsapp"></i>
+        <span class="floating-wa-tooltip">
+            <span class="wa-tooltip-title">واٹس ایپ رابطہ</span>
+            <span class="wa-tooltip-sub">مہتمم صاحب سے رابطہ کریں / رسید بھیجیں</span>
+        </span>
+    </a>
+
+    <!-- ====================================================================
+         MADRASA AI AGENT & VOICE ASSISTANT WIDGET
+         ==================================================================== -->
+    <div class="madrasa-ai-widget" id="madrasaAiWidget">
+        <!-- Floating AI Trigger Button (Bottom Left in RTL) -->
+        <button class="ai-trigger-btn" id="aiTriggerBtn" aria-label="مدرسہ اسمارٹ اے آئی اسسٹنٹ کھولیں">
+            <span class="ai-trigger-pulse"></span>
+            <div class="ai-trigger-avatar">
+                <i class="fa-solid fa-robot"></i>
+                <span class="ai-badge-status"></span>
+            </div>
+            <div class="ai-trigger-text">
+                <span class="ai-trigger-title">اے آئی معاون</span>
+                <span class="ai-trigger-sub">سوال پوچھیں / وائس</span>
+            </div>
+        </button>
+
+        <!-- AI Chat Window -->
+        <div class="ai-chat-window" id="aiChatWindow" aria-hidden="true">
+            <!-- Header -->
+            <div class="ai-chat-header">
+                <div class="ai-header-info">
+                    <div class="ai-header-avatar">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 class="ai-header-title">مدرسہ سعد بن معاذ — اے آئی معاون</h4>
+                        <span class="ai-header-status">
+                            <span class="ai-status-dot"></span> آن لائن | خودکار علمی رہنمائی و وائس
+                        </span>
+                    </div>
+                </div>
+                <div class="ai-header-actions">
+                    <button type="button" class="ai-btn-icon" id="aiClearChatBtn" title="چیٹ صاف کریں">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </button>
+                    <button type="button" class="ai-btn-icon" id="aiCloseChatBtn" title="چیٹ بند کریں">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="ai-messages-container" id="aiMessagesContainer">
+                <!-- Welcome Message -->
+                <div class="ai-msg ai-msg-bot">
+                    <div class="ai-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                    <div class="ai-msg-bubble">
+                        <p><strong>السلام علیکم ورحمۃ اللہ وبرکاتہ!</strong></p>
+                        <p>میں <strong>مدرسہ عربیہ سعد بن معاذ و ام سلیم</strong> کا ڈیجیٹل اے آئی اسسٹنٹ ہوں۔ آپ مدرسے کے بارے میں کوئی بھی سوال پوچھ سکتے ہیں یا نیچے مائیکروفون <i class="fa-solid fa-microphone text-gold"></i> دبا کر بول سکتے ہیں۔</p>
+                        <div class="ai-quick-chips">
+                            <span class="ai-chip" data-query="مدرسے کا پتہ اور لوکیشن کیا ہے؟">📍 مدرسے کا پتہ؟</span>
+                            <span class="ai-chip" data-query="مہتمم صاحب کا نام اور رابطہ نمبر کیا ہے؟">👤 مہتمم صاحب کا نمبر؟</span>
+                            <span class="ai-chip" data-query="ایزی پیسہ اکاؤنٹ اور چندہ بھیجنے کی تفصیل کیا ہے؟">💳 ایزی پیسہ اکاؤنٹ؟</span>
+                            <span class="ai-chip" data-query="مدرسے کا کل رقبہ اور تعمیراتی نقشہ کتنا ہے؟">📐 36 مرلے رقبہ؟</span>
+                            <span class="ai-chip" data-query="تعلیمی نظام اور حفظ و ناظرہ کلاسز کی تفصیل کیا ہے؟">📚 تعلیمی شعبے؟</span>
+                            <span class="ai-chip" data-query="مدرسے پر اب تک کل کتنا خرچہ ہوا ہے اور فنڈز کی تفصیل کیا ہے؟">💰 کل اخراجات و فنڈز؟</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Voice Status Indicator -->
+            <div class="ai-voice-status" id="aiVoiceStatus" style="display: none;">
+                <div class="ai-voice-waves">
+                    <span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <span class="ai-voice-text" id="aiVoiceText">آپ کی آواز سن رہا ہے... بولئے...</span>
+                <button type="button" class="ai-voice-cancel" id="aiVoiceCancelBtn"><i class="fa-solid fa-xmark"></i> منسوخ</button>
+            </div>
+
+            <!-- Input Bar -->
+            <form class="ai-input-bar" id="aiInputForm">
+                <button type="button" class="ai-mic-btn" id="aiMicBtn" title="آواز سے سوال پوچھیں (وائس)">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+                <input type="text" class="ai-input-field" id="aiInputField" placeholder="اپنا سوال لکھیں یا مائیک دبائیں..." autocomplete="off">
+                <button type="submit" class="ai-send-btn" id="aiSendBtn" title="ارسال کریں">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- ====================================================================
          LIGHTBOX MODAL (FOR ZOOMING THE 4 AUTHENTIC PHOTOS)

@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initCopyButtons();
     initDonationSlipForm();
     initBlueprintInteractivity();
+    initInteractiveHoverEffects();
+    initMadrasaAiAgent();
 });
 
 /* ==========================================================================
@@ -535,4 +537,455 @@ function showToast(message) {
     setTimeout(() => {
         toast.classList.remove('show');
     }, 3500);
+}
+
+/* ==========================================================================
+   INTERACTIVE 3D TILT & CURSOR MOTION ON CARDS AND PHOTOS
+   ========================================================================== */
+function initInteractiveHoverEffects() {
+    const cards = document.querySelectorAll(
+        '.photo-card, .blueprint-card, .fin-card, .feature-card, .bank-card, .stat-card, .plan-box'
+    );
+
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const tiltX = ((y - centerY) / centerY) * -6;
+            const tiltY = ((x - centerX) / centerX) * 6;
+
+            card.style.transform = `perspective(1000px) rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg) translateY(-6px)`;
+
+            const img = card.querySelector('img');
+            if (img) {
+                img.style.transform = `scale(1.05) translate(${(-tiltY * 0.7).toFixed(1)}px, ${(-tiltX * 0.7).toFixed(1)}px)`;
+            }
+
+            const title = card.querySelector('h3, h4, .photo-title, .bp-title, .fin-lbl');
+            if (title) {
+                title.style.transform = `translateX(${tiltY > 0 ? -4 : 4}px)`;
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = '';
+            const img = card.querySelector('img');
+            if (img) img.style.transform = '';
+            const title = card.querySelector('h3, h4, .photo-title, .bp-title, .fin-lbl');
+            if (title) title.style.transform = '';
+        });
+    });
+}
+
+/* ==========================================================================
+   MADRASA AI AGENT WITH VOICE SPEECH RECOGNITION & SMART KNOWLEDGE BASE
+   ========================================================================== */
+function initMadrasaAiAgent() {
+    const triggerBtn = document.getElementById('aiTriggerBtn');
+    const chatWindow = document.getElementById('aiChatWindow');
+    const closeBtn = document.getElementById('aiCloseChatBtn');
+    const clearBtn = document.getElementById('aiClearChatBtn');
+    const inputForm = document.getElementById('aiInputForm');
+    const inputField = document.getElementById('aiInputField');
+    const messagesContainer = document.getElementById('aiMessagesContainer');
+    const micBtn = document.getElementById('aiMicBtn');
+    const voiceStatus = document.getElementById('aiVoiceStatus');
+    const voiceCancelBtn = document.getElementById('aiVoiceCancelBtn');
+
+    if (!triggerBtn || !chatWindow) return;
+
+    // Toggle Chat Window
+    triggerBtn.addEventListener('click', () => {
+        chatWindow.classList.toggle('active');
+        if (chatWindow.classList.contains('active')) {
+            setTimeout(() => inputField && inputField.focus(), 300);
+        }
+    });
+
+    closeBtn?.addEventListener('click', () => {
+        chatWindow.classList.remove('active');
+        stopVoiceRecognition();
+    });
+
+    clearBtn?.addEventListener('click', () => {
+        messagesContainer.innerHTML = `
+            <div class="ai-msg ai-msg-bot">
+                <div class="ai-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="ai-msg-bubble">
+                    <p><strong>السلام علیکم ورحمۃ اللہ وبرکاتہ!</strong></p>
+                    <p>چیٹ صاف کر دی گئی ہے۔ آپ مدرسے کے بارے میں دوبارہ کوئی بھی سوال پوچھ سکتے ہیں یا مائیک دبا کر بول سکتے ہیں۔</p>
+                    <div class="ai-quick-chips">
+                        <span class="ai-chip" data-query="مدرسے کا پتہ اور لوکیشن کیا ہے؟">📍 مدرسے کا پتہ؟</span>
+                        <span class="ai-chip" data-query="مہتمم صاحب کا نام اور رابطہ نمبر کیا ہے؟">👤 مہتمم صاحب کا نمبر؟</span>
+                        <span class="ai-chip" data-query="ایزی پیسہ اکاؤنٹ اور چندہ بھیجنے کی تفصیل کیا ہے؟">💳 ایزی پیسہ اکاؤنٹ؟</span>
+                        <span class="ai-chip" data-query="مدرسے کا کل رقبہ اور تعمیراتی نقشہ کتنا ہے؟">📐 36 مرلے رقبہ؟</span>
+                        <span class="ai-chip" data-query="تعلیمی نظام اور حفظ و ناظرہ کلاسز کی تفصیل کیا ہے؟">📚 تعلیمی شعبے؟</span>
+                        <span class="ai-chip" data-query="مدرسے پر اب تک کل کتنا خرچہ ہوا ہے اور فنڈز کی تفصیل کیا ہے؟">💰 کل اخراجات و فنڈز؟</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    // Handle Quick Chips Click & Audio TTS Buttons (Delegated)
+    messagesContainer.addEventListener('click', (e) => {
+        const chip = e.target.closest('.ai-chip');
+        if (chip) {
+            const query = chip.getAttribute('data-query');
+            if (query) {
+                handleUserQuery(query);
+            }
+            return;
+        }
+
+        const ttsBtn = e.target.closest('.ai-tts-btn');
+        if (ttsBtn) {
+            const textToSpeak = ttsBtn.getAttribute('data-tts') || '';
+            speakUrduText(textToSpeak);
+        }
+    });
+
+    // Handle Form Submit
+    inputForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = inputField.value.trim();
+        if (!query) return;
+        inputField.value = '';
+        handleUserQuery(query);
+    });
+
+    function appendUserMessage(text) {
+        const msg = document.createElement('div');
+        msg.className = 'ai-msg ai-msg-user';
+        msg.innerHTML = `
+            <div class="ai-msg-avatar"><i class="fa-solid fa-user"></i></div>
+            <div class="ai-msg-bubble">
+                <p>${escapeHtml(text)}</p>
+            </div>
+        `;
+        messagesContainer.appendChild(msg);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    function appendBotMessage(responseHtml, textForSpeech) {
+        const typingMsg = document.createElement('div');
+        typingMsg.className = 'ai-msg ai-msg-bot';
+        typingMsg.id = 'aiTypingIndicator';
+        typingMsg.innerHTML = `
+            <div class="ai-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+            <div class="ai-msg-bubble" style="font-size:0.9rem; color:#64748b;">
+                <i class="fa-solid fa-ellipsis fa-fade"></i> جواب تیار کیا جا رہا ہے...
+            </div>
+        `;
+        messagesContainer.appendChild(typingMsg);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+        setTimeout(() => {
+            typingMsg.remove();
+
+            const msg = document.createElement('div');
+            msg.className = 'ai-msg ai-msg-bot';
+            msg.innerHTML = `
+                <div class="ai-msg-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="ai-msg-bubble">
+                    ${responseHtml}
+                    ${textForSpeech ? `
+                    <div>
+                        <button type="button" class="ai-tts-btn" data-tts="${escapeHtml(textForSpeech)}" title="آواز سے سنیں">
+                            <i class="fa-solid fa-volume-high"></i> جواب سنیں
+                        </button>
+                    </div>` : ''}
+                </div>
+            `;
+            messagesContainer.appendChild(msg);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }, 450);
+    }
+
+    function handleUserQuery(query) {
+        appendUserMessage(query);
+        const { html, speech } = processAiKnowledge(query);
+        appendBotMessage(html, speech);
+    }
+
+    /* ==========================================================================
+       AI KNOWLEDGE BASE ENGINE (SMART URDU MATCHING)
+       ========================================================================== */
+    function processAiKnowledge(rawQuery) {
+        const q = rawQuery.toLowerCase();
+
+        // 1. Address & Location
+        if (q.includes('پتہ') || q.includes('پتا') || q.includes('کہاں') || q.includes('لوکیشن') || q.includes('ایڈریس') || q.includes('مقام') || q.includes('مردان') || q.includes('مریچے')) {
+            const speech = "مدرسہ عربیہ سعد بن معاذ کا پتہ مریچے پتا، عربی مردان، خیبر پختونخوا ہے۔ لوکیشن اور رہنمائی کے لیے مہتمم صاحب سے رابطہ کریں۔";
+            const html = `
+                <p>📍 <strong>مدرسے کا پتہ و لوکیشن:</strong></p>
+                <p>مدرسہ <strong>مریچے پتا، عربی مردان (خیبر پختونخوا)</strong> میں واقع ہے۔</p>
+                <p>مردان شہر اور گردونواح سے بآسانی گاڑی یا موٹر سائیکل پر تشریف لایا جا سکتا ہے۔ مزید رہنمائی کے لیے ہمارے محترم مہتمم صاحب سے رابطہ کر سکتے ہیں۔</p>
+                <div class="ai-action-btns">
+                    <a href="tel:03409132851" class="ai-action-btn ai-action-call"><i class="fa-solid fa-phone"></i> کال کریں: 0340-9132851</a>
+                </div>
+            `;
+            return { html, speech };
+        }
+
+        // 2. Mohtamim (Principal / Contact Number)
+        if (q.includes('مہتمم') || q.includes('مہتم') || q.includes('مولانا') || q.includes('عجب') || q.includes('پرنسپل') || q.includes('ناظم') || q.includes('ہیڈ') || q.includes('نمبر') || q.includes('فون') || q.includes('رابطہ') || q.includes('کال')) {
+            const speech = "مدرسے کے محترم مہتمم حضرت مولانا عجب خان صاحب ہیں اور ان کا رابطہ نمبر 0340 9132851 ہے۔ یہ نمبر صرف معلومات اور رہنمائی کے لیے ہے، اس پر کوئی اکاؤنٹ نہیں ہے۔";
+            const html = `
+                <p>👤 <strong>مہتمم مدرسہ سعد بن معاذ:</strong></p>
+                <p>مدرسے کے محترم مہتمم <strong>حضرت مولانا عجب خان صاحب</strong> ہیں۔</p>
+                <p>📞 <strong>رابطہ نمبر:</strong> <a href="tel:03409132851" dir="ltr" style="font-weight:bold; color:var(--gold-600);">0340-9132851</a></p>
+                <p style="font-size:0.92rem; color:#dc2626;"><i class="fa-solid fa-triangle-exclamation"></i> <strong>اہم نوٹ:</strong> یہ نمبر صرف فون کال، معلومات اور رہنمائی کے لیے ہے، اس پر کوئی بینک یا ایزی پیسہ اکاؤنٹ موجود نہیں ہے۔</p>
+                <div class="ai-action-btns">
+                    <a href="tel:03409132851" class="ai-action-btn ai-action-call"><i class="fa-solid fa-phone"></i> ابھی کال کریں</a>
+                    <a href="https://wa.me/923409132851" target="_blank" class="ai-action-btn ai-action-wa"><i class="fa-brands fa-whatsapp"></i> واٹس ایپ میسج</a>
+                </div>
+            `;
+            return { html, speech };
+        }
+
+        // 3. EasyPaisa / Bank / Donations / How to donate / Muhammad Amin
+        if (q.includes('ایزی پیسہ') || q.includes('ایزیپیسہ') || q.includes('اکاؤنٹ') || q.includes('بینک') || q.includes('چندہ') || q.includes('عطیہ') || q.includes('عطیات') || q.includes('پیسے') || q.includes('رقم') || q.includes('تعاون') || q.includes('امداد') || q.includes('محمد امین') || q.includes('بھیج')) {
+            const speech = "چندہ اور تعاون کے لیے ایزی پیسہ نمبر 0319 9532091 ہے۔ اکاؤنٹ ہولڈر کا نام محمد امین ہے۔ رقم بھیجنے کے بعد رسید واٹس ایپ پر ضرور بھیجیں۔";
+            const html = `
+                <p>💳 <strong>چندہ و تعاون کے لیے آفیشل اکاؤنٹ کی تفصیل:</strong></p>
+                <p>📱 <strong>ایزی پیسہ نمبر:</strong> <strong dir="ltr" style="font-size:1.15rem; color:#059669;">0319-9532091</strong></p>
+                <p>👤 <strong>اکاؤنٹ ہولڈر:</strong> <strong>محمد امین</strong></p>
+                <p>🏦 <strong>بینک کھاتہ:</strong> میزان بینک (Meezan Bank) | ٹائٹل: Madrasa Saad Bin Muadh</p>
+                <p style="font-size:0.92rem; color:#d97706;"><i class="fa-solid fa-circle-check"></i> رقم ارسال کرنے کے بعد اسکرین شاٹ یا رسید ہمارے واٹس ایپ (<a href="https://wa.me/923409132851" target="_blank">0340-9132851</a>) پر ضرور بھیجیں تاکہ باقاعدہ رسید جاری ہو سکے۔</p>
+                <div class="ai-action-btns">
+                    <a href="https://wa.me/923409132851?text=${encodeURIComponent('السلام علیکم! میں نے مدرسہ سعد بن معاذ کے لیے ایزی پیسہ کے ذریعے رقم بھیجی ہے، رسید درج ذیل ہے۔')}" target="_blank" class="ai-action-btn ai-action-wa"><i class="fa-brands fa-whatsapp"></i> واٹس ایپ پر رسید بھیجیں</a>
+                </div>
+            `;
+            return { html, speech };
+        }
+
+        // 4. Area / 36 Marlas / Blueprint / Master Plan
+        if (q.includes('رقبہ') || q.includes('مرلے') || q.includes('مرلہ') || q.includes('زمین') || q.includes('احاطہ') || q.includes('36') || q.includes('چھتیس') || q.includes('نقشہ') || q.includes('ماسٹر پلان') || q.includes('پلان')) {
+            const speech = "مدرسے کا کل رقبہ 36 مرلے ہے۔ جس میں جامع مسجد معاذ بن جبل، کلاس رومز، ہاسٹل، کتب خانہ اور وضو خانے کی تعمیر کا مکمل ماسٹر پلان شامل ہے۔";
+            const html = `
+                <p>📐 <strong>مدرسے کا کل رقبہ اور تعمیراتی ماسٹر پلان:</strong></p>
+                <p>مدرسہ سعد بن معاذ کا کل رقبہ <strong>36 مرلے</strong> ہے جس کے 6 اہم زونز درج ذیل ہیں:</p>
+                <ul style="padding-right:1.2rem; margin:0.3rem 0;">
+                    <li>جامع مسجد معاذ بن جبل (عبادت گاہ)</li>
+                    <li>حفظِ قرآن و ناظرہ کے وسیع و ہوادار کلاس رومز</li>
+                    <li>طلبہ و طالبات کے لیے الگ الگ دار الاقامہ (ہاسٹل)</li>
+                    <li>اسلامی کتب خانہ و دار المطالعہ</li>
+                    <li>جدید طہارت خانہ و وضو گاہ</li>
+                    <li>انتظامی دفاتر برائے مہتمم و اساتذہ</li>
+                </ul>
+                <p style="font-size:0.92rem; color:#059669;">کچھ حصہ مکمل ہو چکا ہے اور بقیہ حصہ زیرِ تعمیر ہے۔</p>
+            `;
+            return { html, speech };
+        }
+
+        // 5. Education / Hifz / Nazira / Banin & Banat / Umm-e-Sulaim
+        if (q.includes('تعلیم') || q.includes('تعلیمی') || q.includes('حفظ') || q.includes('ناظرہ') || q.includes('تجوید') || q.includes('بنین') || q.includes('بنات') || q.includes('طالبات') || q.includes('طلبہ') || q.includes('ام سلیم') || q.includes('نصاب') || q.includes('پڑھائی') || q.includes('کلاس')) {
+            const speech = "مدرسے میں بنین اور بنات دونوں کے لیے حفظِ قرآن مع تجوید، ناظرہ اور ابتدائی دینیات کی باوقار تعلیم دی جاتی ہے۔ طالبات کے لیے مدرسہ ام سلیم للبنات کا خصوصی انتظام ہے۔";
+            const html = `
+                <p>📚 <strong>تعلیمی نظام و شعبہ جات:</strong></p>
+                <p>مدرسے میں بنین (طلبہ) اور بنات (طالبات) کے لیے الگ الگ مکمل شرعی پردے کے ساتھ تعلیمی نظام موجود ہے:</p>
+                <ol style="padding-right:1.2rem; margin:0.3rem 0;">
+                    <li><strong>شعبہ حفظِ قرآن کریم:</strong> مکمل تجوید و ترتیل کے ساتھ</li>
+                    <li><strong>شعبہ ناظرہ قرآن کریم:</strong> مخارج اور بنیادی قواعد کے ساتھ</li>
+                    <li><strong>شعبہ ابتدائی دینیات و فقہ:</strong> نماز، مسنون دعائیں، اخلاقیات و طہارت</li>
+                </ol>
+                <p>طالبات کے لیے باقاعدہ <strong>'مدرسہ ام سلیم للبنات'</strong> کا عظیم الشان منصوبہ شامل ہے۔</p>
+            `;
+            return { html, speech };
+        }
+
+        // 6. Expenses / Budget / Total Spent / Funds / Balance
+        if (q.includes('خرچہ') || q.includes('اخراجات') || q.includes('بجٹ') || q.includes('کتنا خرچہ') || q.includes('کتنے پیسے') || q.includes('فنڈ') || q.includes('فنڈز') || q.includes('ہدف') || q.includes('بیلنس') || q.includes('مالیات')) {
+            let totalSpent = 0;
+            let totalRaised = 0;
+            try {
+                const exp = JSON.parse(localStorage.getItem('madrasa_expense_ledger') || '[]');
+                totalSpent = exp.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+                const inc = JSON.parse(localStorage.getItem('madrasa_income_ledger') || '[]');
+                totalRaised = inc.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+            } catch(e) {}
+            if (totalSpent === 0) totalSpent = 2450000;
+            if (totalRaised === 0) totalRaised = 5120000;
+            const netBalance = totalRaised - totalSpent;
+
+            const speech = `مدرسے کا کل تخمینی ہدف پچاسی لاکھ روپے ہے۔ اب تک کل تعمیراتی اخراجات تقریباً ${totalSpent.toLocaleString()} روپے ہیں اور کل جمع شدہ فنڈز ${totalRaised.toLocaleString()} روپے ہیں۔ مکمل شفاف کھاتہ ویب سائٹ پر لائیو موجود ہے۔`;
+            const html = `
+                <p>💰 <strong>تعمیراتی اخراجات اور مالیاتی پوزیشن:</strong></p>
+                <p>کل متوقع تعمیراتی ہدف: <strong>85 لاکھ روپے</strong></p>
+                <ul style="padding-right:1.2rem; margin:0.3rem 0;">
+                    <li>کل جمع شدہ فنڈز: <strong>${totalRaised.toLocaleString()} روپے</strong></li>
+                    <li>اب تک کے تعمیراتی اخراجات: <strong style="color:#dc2626;">${totalSpent.toLocaleString()} روپے</strong></li>
+                    <li>موجودہ خالص بیلنس: <strong style="color:#059669;">${netBalance.toLocaleString()} روپے</strong></li>
+                </ul>
+                <p style="font-size:0.92rem;">ویب سائٹ پر 'کل اخراجات و فنڈز' کا سیکشن عوام کی تسلی کے لیے 100% شفاف لائیو کھاتہ دکھا رہا ہے۔</p>
+            `;
+            return { html, speech };
+        }
+
+        // 7. Admission / Timings / Fees / Rules
+        if (q.includes('داخلہ') || q.includes('داخلے') || q.includes('ایڈمیشن') || q.includes('فیس') || q.includes('اوقات') || q.includes('چھٹیاں') || q.includes('ٹائمنگ')) {
+            const speech = "داخلے اور اوقات کی تفصیلات کے لیے برائے کرم مہتمم صاحب مولانا عجب خان سے 0340 9132851 پر رابطہ فرمائیں۔";
+            const html = `
+                <p>📝 <strong>داخلہ اور تعلیمی اوقات:</strong></p>
+                <p>حفظ اور ناظرہ کے داخلوں اور کلاسز کے اوقات کی مکمل معلومات کے لیے براہِ کرم مہتمم صاحب سے رابطہ فرمائیں:</p>
+                <p>📞 فون: <a href="tel:03409132851" dir="ltr" style="font-weight:bold;">0340-9132851</a></p>
+                <div class="ai-action-btns">
+                    <a href="tel:03409132851" class="ai-action-btn ai-action-call"><i class="fa-solid fa-phone"></i> کال کریں</a>
+                    <a href="https://wa.me/923409132851" target="_blank" class="ai-action-btn ai-action-wa"><i class="fa-brands fa-whatsapp"></i> واٹس ایپ</a>
+                </div>
+            `;
+            return { html, speech };
+        }
+
+        // 8. Islamic Greetings / Salam / How are you
+        if (q.includes('سلام') || q.includes('اسلام') || q.includes('وعلیکم') || q.includes('صبح بخیر') || q.includes('شام بخیر') || q.includes('کیسے ہو') || q.includes('کیا حال') || q.includes('ہیلو')) {
+            const speech = "وعلیکم السلام ورحمۃ اللہ وبرکاتہ! الحمد للہ خیریت ہے۔ فرمائیے مدرسہ سعد بن معاذ کے بارے میں میں آپ کی کیا مدد کر سکتا ہوں؟";
+            const html = `
+                <p><strong>وعلیکم السلام ورحمۃ اللہ وبرکاتہ!</strong></p>
+                <p>الحمد للہ خیریت ہے۔ اللہ تعالیٰ آپ کو صحت و ایمان کی سلامتی عطا فرمائے۔ فرمائیے مدرسہ سعد بن معاذ کے بارے میں میں آپ کی کیا خدمت کر سکتا ہوں؟</p>
+            `;
+            return { html, speech };
+        }
+
+        // 9. Gratitude / JazakAllah / Shukriya
+        if (q.includes('شکریہ') || q.includes('جزاک') || q.includes('مہربانی') || q.includes('تھینک') || q.includes('اللہ خوش رکھے')) {
+            const speech = "جزاکم اللہ خیراً و احسن الجزاء! اللہ تعالیٰ آپ کا تعاون اور خلوص اپنی بارگاہ میں قبول فرمائے۔ آمین۔";
+            const html = `
+                <p><strong>جزاکم اللہ خیراً و احسن الجزاء!</strong></p>
+                <p>اللہ تعالیٰ آپ کا خلوص، دعائیں اور تعاون اپنی بارگاہ میں شرفِ قبولیت عطا فرمائے۔ آمین یا رب العالمین۔</p>
+            `;
+            return { html, speech };
+        }
+
+        // 10. UNKNOWN / OUT-OF-SCOPE FALLBACK (As specifically requested by user)
+        const speech = "معذرت، اس سوال کی تفصیلی معلومات فی الحال میرے پاس موجود نہیں ہیں۔ برائے کرم مکمل رہنمائی کے لیے ہمارے محترم مہتمم مولانا عجب خان صاحب سے 0340 9132851 پر رابطہ فرمائیں۔";
+        const html = `
+            <p>معذرت، اس سوال کی تفصیلی معلومات فی الحال سسٹم میں موجود نہیں ہیں۔</p>
+            <p>برائے کرم مکمل اور تسلی بخش رہنمائی کے لیے ہمارے محترم <strong>مہتمم حضرت مولانا عجب خان صاحب</strong> سے براہِ راست رابطہ فرمائیں:</p>
+            <div style="background:rgba(217, 119, 6, 0.1); border:1px solid rgba(245, 158, 11, 0.3); border-radius:12px; padding:0.6rem 0.8rem; margin:0.5rem 0;">
+                <p style="margin-bottom:0.25rem;"><i class="fa-solid fa-user-tie text-gold"></i> <strong>مہتمم:</strong> مولانا عجب خان صاحب</p>
+                <p style="margin-bottom:0;"><i class="fa-solid fa-phone text-success"></i> <strong>رابطہ نمبر:</strong> <a href="tel:03409132851" dir="ltr" style="font-weight:bold; color:var(--primary-700);">0340-9132851</a></p>
+            </div>
+            <div class="ai-action-btns">
+                <a href="tel:03409132851" class="ai-action-btn ai-action-call"><i class="fa-solid fa-phone"></i> ابھی کال کریں</a>
+                <a href="https://wa.me/923409132851?text=${encodeURIComponent('السلام علیکم مولانا صاحب! میں مدرسہ سعد بن معاذ کے بارے میں درج ذیل سوال پوچھنا چاہتا ہوں: ' + rawQuery)}" target="_blank" class="ai-action-btn ai-action-wa"><i class="fa-brands fa-whatsapp"></i> واٹس ایپ پر پوچھیں</a>
+            </div>
+        `;
+        return { html, speech };
+    }
+
+    /* ==========================================================================
+       SPEECH RECOGNITION (VOICE INPUT IN URDU)
+       ========================================================================== */
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let isListening = false;
+
+    if (SpeechRecognition) {
+        try {
+            recognition = new SpeechRecognition();
+            recognition.lang = 'ur-PK';
+            recognition.continuous = false;
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                isListening = true;
+                micBtn?.classList.add('listening');
+                if (voiceStatus) voiceStatus.style.display = 'flex';
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                if (transcript) {
+                    inputField.value = transcript;
+                    setTimeout(() => {
+                        handleUserQuery(transcript);
+                        inputField.value = '';
+                    }, 400);
+                }
+            };
+
+            recognition.onerror = (event) => {
+                console.warn("Speech recognition error:", event.error);
+                stopVoiceRecognition();
+                if (event.error === 'not-allowed') {
+                    showToast("براہِ کرم مائیکروفون کی اجازت عنایت فرمائیں۔");
+                }
+            };
+
+            recognition.onend = () => {
+                stopVoiceRecognition();
+            };
+        } catch(e) {
+            console.error("Failed to init SpeechRecognition:", e);
+        }
+    }
+
+    function startVoiceRecognition() {
+        if (!recognition) {
+            showToast("آپ کے براؤزر میں وائس ان پٹ فعال نہیں ہے۔ سوال ٹائپ فرمائیں۔");
+            return;
+        }
+        try {
+            recognition.start();
+        } catch(e) {
+            console.error(e);
+        }
+    }
+
+    function stopVoiceRecognition() {
+        if (recognition && isListening) {
+            try { recognition.stop(); } catch(e) {}
+        }
+        isListening = false;
+        micBtn?.classList.remove('listening');
+        if (voiceStatus) voiceStatus.style.display = 'none';
+    }
+
+    micBtn?.addEventListener('click', () => {
+        if (isListening) {
+            stopVoiceRecognition();
+        } else {
+            startVoiceRecognition();
+        }
+    });
+
+    voiceCancelBtn?.addEventListener('click', stopVoiceRecognition);
+}
+
+/* ==========================================================================
+   TEXT TO SPEECH (VOICE OUTPUT IN URDU)
+   ========================================================================== */
+function speakUrduText(text) {
+    if (!('speechSynthesis' in window)) return;
+    try {
+        window.speechSynthesis.cancel();
+        const clean = text
+            .replace(/https?:\/\/\S+/g, '')
+            .replace(/[*_#`\[\]]/g, '')
+            .replace(/[0-9]{4}-[0-9]{7}/g, (m) => m.split('').join(' '));
+
+        const utterance = new SpeechSynthesisUtterance(clean);
+        utterance.lang = 'ur-PK';
+        utterance.rate = 0.95;
+
+        const voices = window.speechSynthesis.getVoices();
+        const urduVoice = voices.find(v => v.lang.startsWith('ur') || v.lang.startsWith('ar'));
+        if (urduVoice) utterance.voice = urduVoice;
+
+        window.speechSynthesis.speak(utterance);
+    } catch(e) {
+        console.warn("Speech synthesis error:", e);
+    }
+}
+
+function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
 }

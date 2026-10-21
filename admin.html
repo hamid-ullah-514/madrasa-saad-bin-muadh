@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ur" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ایڈمن پینل | مدرسہ سعد بن معاذ</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Admin Styling with Dukan App UrduFont -->
+    <style>
+        @font-face {
+            font-family: 'Jameel Noori Nastaleeq';
+            src: url('assets/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        :root {
+            --primary: #064e3b;
+            --primary-dark: #022c22;
+            --gold: #d97706;
+            --gold-light: #f59e0b;
+            --bg: #f1f5f9;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --font-urdu: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', system-ui, sans-serif;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-urdu) !important;
+            background: var(--bg);
+            color: var(--text);
+            direction: rtl;
+            text-align: right;
+            line-height: 2.2;
+        }
+
+        h1, h2, h3, h4, h5, h6, input, select, textarea, button, label, p, span, td, th {
+            font-family: var(--font-urdu) !important;
+        }
+
+        /* Login Screen Overlay */
+        .login-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 44, 34, 0.95);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1.5rem;
+        }
+
+        .login-overlay.hidden {
+            display: none;
+        }
+
+        .login-card {
+            background: #fff;
+            max-width: 440px;
+            width: 100%;
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            text-align: center;
+            border: 2px solid var(--gold);
+        }
+
+        .login-card .logo {
+            width: 65px;
+            height: 65px;
+            margin-inline: auto;
+            background: var(--primary);
+            color: var(--gold-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Top Header */
+        .admin-header {
+            background: var(--primary-dark);
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h2 {
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--gold-light);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn-link {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            text-decoration: none;
+            padding: 0.4rem 1.1rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .btn-link:hover {
+            background: var(--gold);
+            color: #000;
+        }
+
+        /* Layout */
+        .admin-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding-inline: 1.5rem;
+        }
+
+        /* Stats Grid */
+        .admin-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            text-align: center;
+        }
+
+        .stat-card .val {
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.3;
+        }
+
+        .stat-card .lbl {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+        }
+
+        /* Forms Layout */
+        .admin-section {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+        }
+
+        .admin-section h3 {
+            font-size: 1.45rem;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            background: #f8fafc;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .btn-submit:hover {
+            background: var(--gold);
+            color: #000;
+        }
+
+        /* Inquiries Table */
+        .inquiry-table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1rem;
+        }
+
+        th, td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border);
+            text-align: right;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .action-del-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .action-del-btn:hover {
+            background: #b91c1c;
+            color: #fff;
+        }
+
+        @media (max-width: 900px) {
+            .admin-stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .admin-header {
+                flex-direction: column;
+                gap: 0.85rem;
+                text-align: center;
+                padding: 1rem 0.85rem;
+            }
+            .admin-header h2 {
+                font-size: 1.25rem;
+            }
+            .header-actions {
+                width: 100%;
+                justify-content: center;
+            }
+            .admin-stats-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            .admin-container {
+                padding: 1rem 0.85rem;
+            }
+            .admin-section {
+                padding: 1.25rem;
+            }
+            .login-card {
+                padding: 1.5rem 1rem;
+                margin-inline: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====================================================================
+         LOGIN MODAL
+         ==================================================================== -->
+    <div class="login-overlay" id="loginModal">
+        <div class="login-card">
+            <div class="logo">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <h2 style="font-size: 1.6rem; color: var(--primary); margin-bottom: 0.5rem;">
+                ایڈمنسٹریشن لاگ ان
+            </h2>
+            <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات (مردان)
+            </p>
+
+            <form id="adminLoginForm">
+                <div class="form-group" style="text-align: right;">
+                    <label for="adminPin">سیکیورٹی پاس کوڈ / پن کوڈ درج کریں:</label>
+                    <input type="password" id="adminPin" placeholder="ڈیفالٹ پن: 1234" required style="text-align: center; letter-spacing: 4px; font-size: 1.3rem;">
+                </div>
+                <button type="submit" class="btn-submit" style="width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-right-to-bracket"></i> لاگ ان کریں
+                </button>
+            </form>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
+                (سسٹم کا ڈیفالٹ لاگ ان پن: <strong>1234</strong> ہے)
+            </p>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         ADMIN HEADER
+         ==================================================================== -->
+    <header class="admin-header">
+        <h2>
+            <i class="fa-solid fa-mosque"></i> ایڈمن ڈیش بورڈ - مدرسہ عربیہ سعد بن معاذ و مدرسہ ام سلیم للبنات
+        </h2>
+        <div class="header-actions">
+            <a href="index.html" class="btn-link" target="_blank">
+                <i class="fa-solid fa-globe"></i> ویب سائٹ دیکھیں
+            </a>
+            <button id="logoutBtn" class="btn-link" style="background:#dc2626; border:none; cursor:pointer;">
+                <i class="fa-solid fa-power-off"></i> لاگ آؤٹ
+            </button>
+        </div>
+    </header>
+
+    <!-- ====================================================================
+         MAIN ADMIN CONTAINER
+         ==================================================================== -->
+    <main class="admin-container">
+
+        <!-- Top Stats Row -->
+        <div class="admin-stats-grid">
+            <div class="stat-card">
+                <div class="val" id="statTarget">8,500,000</div>
+                <div class="lbl">کل درکار بجٹ (روپے)</div>
+            </div>
+            <div class="stat-card">
+                <div class="val" id="statRaised" style="color:#059669;">5,120,000</div>
+                <div class="lbl">جمع شدہ عطیات (روپے)</div>
+            </div>
+            <div class="stat-card">
+                <div class="val" id="statProgress" style="color:var(--gold);">60%</div>
+                <div class="lbl">زیرِ تعمیر کام کی پیشرفت</div>
+            </div>
+            <div class="stat-card">
+                <div class="val" id="statInquiries">0</div>
+                <div class="lbl">موصول شدہ پیغامات/عطیات</div>
+            </div>
+        </div>
+
+        <!-- 1. Financial & Construction Progress Settings -->
+        <section class="admin-section">
+            <h3><i class="fa-solid fa-coins"></i> مالی بجٹ و تعمیراتی پیشرفت اپڈیٹ کریں</h3>
+            <form id="financeForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="inputTarget">کل درکار رقم / ہدف (PKR):</label>
+                        <input type="number" id="inputTarget" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputRaised">اب تک موصول شدہ عطیات (PKR):</label>
+                        <input type="number" id="inputRaised" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputProgress">زیرِ تعمیر حصے کی موجودہ تکمیل (%):</label>
+                        <input type="number" id="inputProgress" min="0" max="100" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputArea">کل اراضی / رقبہ:</label>
+                        <input type="text" id="inputArea" value="36 مرلے" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="inputAnnouncement">اہم اعلان / مستقبل کا منصوبہ (ٹکر میسج):</label>
+                        <textarea id="inputAnnouncement" rows="2" required></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-floppy-disk"></i> مالی معلومات محفوظ کریں
+                </button>
+            </form>
+        </section>
+
+        <!-- 2. Official Contact & Payment Accounts Settings -->
+        <section class="admin-section">
+            <h3><i class="fa-solid fa-address-book"></i> آفیشل رابطہ اور ایزی پیسہ / بینک اکاؤنٹس</h3>
+            <form id="contactAccountsForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="inputMohtamim">مہتمم صاحب کا نام:</label>
+                        <input type="text" id="inputMohtamim" value="حضرت مولانا عجب خان صاحب" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputMohtamimPhone">مہتمم صاحب کا رابطہ نمبر (صرف رابطہ و واٹس ایپ):</label>
+                        <input type="text" id="inputMohtamimPhone" value="0340-9132851" required dir="ltr">
+                        <small style="color: #b91c1c; font-weight: bold; font-size: 0.85rem;">(نوٹ: اس نمبر پر کوئی بینک یا ایزی پیسہ اکاؤنٹ نہیں ہے، یہ صرف کال اور معلومات کے لیے ہے)</small>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="inputAddress">مدرسہ کا پتہ (مردان):</label>
+                        <input type="text" id="inputAddress" value="خاندان ٹاؤن، جمال گڑھی، ساولدھیر روڈ، مردان (خیبر پختونخوا)" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEasyNumber">عطیات ایزی پیسہ نمبر:</label>
+                        <input type="text" id="inputEasyNumber" value="0319-9532091" required dir="ltr">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputEasyTitle">ایزی پیسہ اکاؤنٹ ہولڈر کا نام (ٹائٹل):</label>
+                        <input type="text" id="inputEasyTitle" value="محمد امین" required>
+                        <small style="color: #047857; font-weight: bold; font-size: 0.85rem;">(صرف ایزی پیسہ فعال ہے - جیز کیش موجود نہیں ہے)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputBankName">بینک کا نام:</label>
+                        <input type="text" id="inputBankName" value="میزان بینک (Meezan Bank)">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inputBankTitle">بینک اکاؤنٹ ٹائٹل:</label>
+                        <input type="text" id="inputBankTitle" value="Madrasa Saad Bin Muadh">
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="inputBankIban">بینک IBAN نمبر:</label>
+                        <input type="text" id="inputBankIban" value="PK45MEZN0001234567890123" dir="ltr">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-floppy-disk"></i> اکاؤنٹس کی تفصیلات محفوظ کریں
+                </button>
+            </form>
+        </section>
+
+        <!-- 3. Inquiries & Donor Messages -->
+        <section class="admin-section">
+            <h3><i class="fa-solid fa-inbox"></i> موصول شدہ عطیات، رسیدیں اور پیغامات</h3>
+            <div class="inquiry-table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>تاریخ و وقت</th>
+                            <th>نامِ گرامی</th>
+                            <th>رابطہ نمبر</th>
+                            <th>تعاون کی مد</th>
+                            <th>عطیہ کی رقم و طریقہ</th>
+                            <th>تفصیل / حوالہ نمبر</th>
+                            <th>کارروائی</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inquiryTableBody">
+                        <tr>
+                            <td colspan="7" style="text-align: center; color: var(--text-muted);">کوئی پیغام ابھی موصول نہیں ہوا۔</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Admin JavaScript Logic -->
+    <script>
+        const AUTH_KEY = 'madrasa_admin_auth';
+        const DATA_KEY = 'madrasa_saad_bin_muadh_data';
+        const INQUIRIES_KEY = 'madrasa_inquiries';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadFormData();
+            loadInquiries();
+
+            // Forms
+            document.getElementById('adminLoginForm').addEventListener('submit', handleLogin);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            document.getElementById('financeForm').addEventListener('submit', handleFinanceSave);
+            document.getElementById('contactAccountsForm').addEventListener('submit', handleAccountsSave);
+        });
+
+        function checkAuth() {
+            const isAuth = sessionStorage.getItem(AUTH_KEY);
+            const modal = document.getElementById('loginModal');
+            if (isAuth === 'true') {
+                modal.classList.add('hidden');
+            } else {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const pin = document.getElementById('adminPin').value.trim();
+            if (pin === '1234' || pin === 'admin') {
+                sessionStorage.setItem(AUTH_KEY, 'true');
+                document.getElementById('loginModal').classList.add('hidden');
+            } else {
+                alert("غلط پن کوڈ! دوبارہ کوشش فرمائیں۔ (ڈیفالٹ پن: 1234)");
+            }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem(AUTH_KEY);
+            location.reload();
+        }
+
+        const DEFAULT_ADMIN_DATA = {
+            institutionName: "مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات",
+            masjidName: "زیرِ تعمیر مسجد معز اللہ خان",
+            mohtamim: "حضرت مولانا عجب خان صاحب",
+            mohtamimPhone: "0340-9132851",
+            address: "خاندان ٹاؤن، جمال گڑھی، ساولدھیر روڈ، مردان (خیبر پختونخوا)",
+            area: "36 مرلے",
+            easyPaisaNumber: "0319-9532091",
+            easyPaisaTitle: "محمد امین",
+            bankName: "میزان بینک (Meezan Bank)",
+            bankAccountTitle: "Madrasa Saad Bin Muadh",
+            bankIban: "PK45MEZN0001234567890123",
+            targetDonation: 8500000,
+            raisedDonation: 5120000,
+            underConstructionProgress: 60,
+            announcement: "مستقبل کا شاندار منصوبہ: اگلا بنات کا باقاعدہ کیمپس (مدرسہ ام سلیم للبنات) اور بنین کا جدید تجوید سسٹم جلد شروع ہو رہا ہے۔"
+        };
+
+        function getStoredData() {
+            const raw = localStorage.getItem(DATA_KEY);
+            if (raw) {
+                try { return { ...DEFAULT_ADMIN_DATA, ...JSON.parse(raw) }; } catch (e) {}
+            }
+            return DEFAULT_ADMIN_DATA;
+        }
+
+        function loadFormData() {
+            const data = getStoredData();
+
+            // Stats
+            document.getElementById('statTarget').textContent = (data.targetDonation || 8500000).toLocaleString();
+            document.getElementById('statRaised').textContent = (data.raisedDonation || 5120000).toLocaleString();
+            document.getElementById('statProgress').textContent = (data.underConstructionProgress || 60) + '%';
+
+            // Financial Inputs
+            document.getElementById('inputTarget').value = data.targetDonation || 8500000;
+            document.getElementById('inputRaised').value = data.raisedDonation || 5120000;
+            document.getElementById('inputProgress').value = data.underConstructionProgress || 60;
+            document.getElementById('inputArea').value = data.area || "36 مرلے";
+            document.getElementById('inputAnnouncement').value = data.announcement || "";
+
+            // Accounts & Contact Inputs
+            document.getElementById('inputMohtamim').value = data.mohtamim || "حضرت مولانا عجب خان صاحب";
+            document.getElementById('inputMohtamimPhone').value = data.mohtamimPhone || "0340-9132851";
+            document.getElementById('inputAddress').value = data.address || "خاندان ٹاؤن، جمال گڑھی، ساولدھیر روڈ، مردان (خیبر پختونخوا)";
+            document.getElementById('inputEasyNumber').value = data.easyPaisaNumber || "0319-9532091";
+            document.getElementById('inputEasyTitle').value = data.easyPaisaTitle || "محمد امین";
+            document.getElementById('inputBankName').value = data.bankName || "میزان بینک (Meezan Bank)";
+            document.getElementById('inputBankTitle').value = data.bankAccountTitle || "Madrasa Saad Bin Muadh";
+            document.getElementById('inputBankIban').value = data.bankIban || "PK45MEZN0001234567890123";
+        }
+
+        function handleFinanceSave(e) {
+            e.preventDefault();
+            const data = getStoredData();
+            data.targetDonation = parseInt(document.getElementById('inputTarget').value) || 0;
+            data.raisedDonation = parseInt(document.getElementById('inputRaised').value) || 0;
+            data.underConstructionProgress = parseInt(document.getElementById('inputProgress').value) || 0;
+            data.area = document.getElementById('inputArea').value.trim();
+            data.announcement = document.getElementById('inputAnnouncement').value.trim();
+
+            localStorage.setItem(DATA_KEY, JSON.stringify(data));
+            loadFormData();
+            alert("مالی و تعمیراتی معلومات محفوظ ہو چکی ہیں اور ویب سائٹ پر اپڈیٹ ہو گئی ہیں۔");
+        }
+
+        function handleAccountsSave(e) {
+            e.preventDefault();
+            const data = getStoredData();
+            data.mohtamim = document.getElementById('inputMohtamim').value.trim();
+            data.mohtamimPhone = document.getElementById('inputMohtamimPhone').value.trim();
+            data.address = document.getElementById('inputAddress').value.trim();
+            data.easyPaisaNumber = document.getElementById('inputEasyNumber').value.trim();
+            data.easyPaisaTitle = document.getElementById('inputEasyTitle').value.trim();
+            data.bankName = document.getElementById('inputBankName').value.trim();
+            data.bankAccountTitle = document.getElementById('inputBankTitle').value.trim();
+            data.bankIban = document.getElementById('inputBankIban').value.trim();
+
+            localStorage.setItem(DATA_KEY, JSON.stringify(data));
+            loadFormData();
+            alert("آفیشل رابطہ اور اکاؤنٹس کی تفصیلات کامیابی کے ساتھ محفوظ ہو گئی ہیں۔");
+        }
+
+        function loadInquiries() {
+            const list = JSON.parse(localStorage.getItem(INQUIRIES_KEY) || '[]');
+            document.getElementById('statInquiries').textContent = list.length;
+            const tbody = document.getElementById('inquiryTableBody');
+
+            if (!list || list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">ابھی تک کوئی نیا میسج یا عطیہ کی رسید موصول نہیں ہوئی۔</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map((inq, idx) => `
+                <tr>
+                    <td>${inq.date || '-'}</td>
+                    <td><strong>${inq.name || '-'}</strong></td>
+                    <td dir="ltr">${inq.phone || '-'}</td>
+                    <td><span style="background:#ecfdf5; color:#047857; padding:0.2rem 0.5rem; border-radius:4px; font-weight:700; font-size:0.9rem;">${inq.type || '-'}</span></td>
+                    <td style="color:#d97706; font-weight:800;">${inq.amount || '-'}</td>
+                    <td style="max-width:240px; font-size:0.95rem;">${inq.message || '-'}</td>
+                    <td>
+                        <button class="action-del-btn" onclick="deleteInquiry(${idx})">
+                            <i class="fa-solid fa-trash"></i> ڈیلیٹ
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        window.deleteInquiry = function(index) {
+            if (confirm("کیا آپ واقعی اس رسید یا پیغام کو حذف کرنا چاہتے ہیں؟")) {
+                const list = JSON.parse(localStorage.getItem(INQUIRIES_KEY) || '[]');
+                list.splice(index, 1);
+                localStorage.setItem(INQUIRIES_KEY, JSON.stringify(list));
+                loadInquiries();
+            }
+        };
+    </script>
+</body>
+</html>
+

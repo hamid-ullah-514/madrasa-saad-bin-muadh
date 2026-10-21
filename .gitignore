@@ -1,0 +1,6 @@
+# Temporary test files & browser profiles
+test_screenshots/
+.DS_Store
+Thumbs.db
+node_modules/
+*.log

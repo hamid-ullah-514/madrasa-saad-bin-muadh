@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ایڈمن پینل | مدرسہ سعد بن معاذ</title>
+    <title>کھاتہ و ایڈمن پورٹل | مدرسہ عربیہ سعد بن معاذ و مدرسہ ام سلیم للبنات (مردان)</title>
 
-    <!-- Font Awesome -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <!-- Admin Styling with Dukan App UrduFont -->
+    <!-- Admin Styling with Jameel Noori Nastaleeq -->
     <style>
         @font-face {
             font-family: 'Jameel Noori Nastaleeq';
-            src: url('assets/fonts/JameelNooriNastaleeq.ttf') format('truetype');
+            src: url('assets/fonts/JameelNooriNastaleeq.woff') format('woff'),
+                 url('assets/fonts/JameelNooriNastaleeq.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
             font-display: swap;
@@ -21,15 +22,27 @@
         :root {
             --primary: #064e3b;
             --primary-dark: #022c22;
+            --primary-light: #059669;
             --gold: #d97706;
             --gold-light: #f59e0b;
-            --bg: #f1f5f9;
+            --danger: #dc2626;
+            --danger-bg: #fee2e2;
+            --success: #059669;
+            --success-bg: #d1fae5;
+            --info: #0284c7;
+            --info-bg: #e0f2fe;
+            --bg: #f8fafc;
             --card-bg: #ffffff;
             --text: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
-            --radius: 12px;
+            --radius-sm: 8px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 6px rgba(0,0,0,0.04);
+            --shadow: 0 8px 24px rgba(6, 78, 59, 0.08);
             --font-urdu: 'Jameel Noori Nastaleeq', 'Noto Nastaliq Urdu', system-ui, sans-serif;
+            --font-en: system-ui, -apple-system, sans-serif;
         }
 
         *, *::before, *::after {
@@ -44,19 +57,26 @@
             color: var(--text);
             direction: rtl;
             text-align: right;
-            line-height: 2.2;
+            line-height: 2.1;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, h5, h6, input, select, textarea, button, label, p, span, td, th {
             font-family: var(--font-urdu) !important;
         }
 
-        /* Login Screen Overlay */
+        .en-text, [dir="ltr"] {
+            font-family: var(--font-en) !important;
+        }
+
+        /* --------------------------------------------------------------------------
+           LOGIN SCREEN OVERLAY
+           -------------------------------------------------------------------------- */
         .login-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(2, 44, 34, 0.95);
-            backdrop-filter: blur(8px);
+            background: rgba(2, 44, 34, 0.96);
+            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -70,125 +90,312 @@
 
         .login-card {
             background: #fff;
-            max-width: 440px;
+            max-width: 450px;
             width: 100%;
-            padding: 2.5rem;
-            border-radius: var(--radius);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.45);
             text-align: center;
             border: 2px solid var(--gold);
+            animation: popIn 0.3s ease-out;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.92); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
         }
 
         .login-card .logo {
-            width: 65px;
-            height: 65px;
+            width: 70px;
+            height: 70px;
             margin-inline: auto;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: var(--gold-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
+            border: 2px solid var(--gold);
         }
 
-        /* Top Header */
+        /* --------------------------------------------------------------------------
+           ADMIN HEADER
+           -------------------------------------------------------------------------- */
         .admin-header {
             background: var(--primary-dark);
             color: #fff;
-            padding: 1rem 2rem;
+            padding: 1rem 1.75rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            border-bottom: 3px solid var(--gold);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .admin-header h2 {
-            font-size: 1.5rem;
+        .header-brand {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            color: var(--gold-light);
+            gap: 0.85rem;
+        }
+
+        .header-brand .emblem {
+            width: 44px;
+            height: 44px;
+            background: var(--primary);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .header-brand h1 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            line-height: 1.3;
+        }
+
+        .header-brand p {
+            font-size: 0.88rem;
+            color: #cbd5e1;
+            line-height: 1.2;
         }
 
         .header-actions {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.65rem;
+            flex-wrap: wrap;
         }
 
-        .btn-link {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-            text-decoration: none;
-            padding: 0.4rem 1.1rem;
-            border-radius: 50px;
-            font-size: 0.95rem;
+        .btn-header {
             display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
-            transition: all 0.2s;
+            gap: 0.45rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.4rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s ease;
         }
 
-        .btn-link:hover {
-            background: var(--gold);
+        .btn-header:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-header-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
             color: #000;
+            border: none;
+            font-weight: 800;
         }
 
-        /* Layout */
+        .btn-header-danger {
+            background: #b91c1c;
+            border-color: #ef4444;
+        }
+
+        /* --------------------------------------------------------------------------
+           MAIN DASHBOARD CONTAINER
+           -------------------------------------------------------------------------- */
         .admin-container {
             max-width: 1200px;
-            margin: 2rem auto;
-            padding-inline: 1.5rem;
+            margin: 1.5rem auto;
+            padding: 0 1.25rem 3rem;
         }
 
-        /* Stats Grid */
-        .admin-stats-grid {
+        /* --------------------------------------------------------------------------
+           KPI STATS CARDS
+           -------------------------------------------------------------------------- */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.25rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.75rem;
         }
 
         .stat-card {
-            background: #fff;
-            border: 1px solid var(--border);
-            padding: 1.5rem;
+            background: var(--card-bg);
             border-radius: var(--radius);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            text-align: center;
+            padding: 1.25rem 1.5rem;
+            border: 1.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
         }
 
-        .stat-card .val {
-            font-size: 1.9rem;
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            height: 4px;
+        }
+
+        .stat-card.stat-income::before { background: var(--success); }
+        .stat-card.stat-expense::before { background: var(--danger); }
+        .stat-card.stat-balance::before { background: var(--info); }
+        .stat-card.stat-target::before { background: var(--gold); }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-lbl {
+            font-size: 1.05rem;
             font-weight: 700;
-            color: var(--primary);
-            line-height: 1.3;
-        }
-
-        .stat-card .lbl {
-            font-size: 1rem;
             color: var(--text-muted);
-            margin-top: 0.3rem;
         }
 
-        /* Forms Layout */
-        .admin-section {
+        .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.15rem;
+        }
+
+        .stat-income .stat-icon { background: var(--success-bg); color: var(--success); }
+        .stat-expense .stat-icon { background: var(--danger-bg); color: var(--danger); }
+        .stat-balance .stat-icon { background: var(--info-bg); color: var(--info); }
+        .stat-target .stat-icon { background: #fef3c7; color: var(--gold); }
+
+        .stat-val {
+            font-size: 1.85rem;
+            font-weight: 800;
+            line-height: 1.2;
+            font-family: var(--font-en) !important;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-income .stat-val { color: var(--success); }
+        .stat-expense .stat-val { color: var(--danger); }
+        .stat-balance .stat-val { color: var(--info); }
+        .stat-target .stat-val { color: var(--gold); }
+
+        .stat-sub {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* --------------------------------------------------------------------------
+           NAVIGATION TABS
+           -------------------------------------------------------------------------- */
+        .admin-nav-tabs {
+            display: flex;
+            gap: 0.65rem;
             background: #fff;
-            border: 1px solid var(--border);
+            padding: 0.5rem;
             border-radius: var(--radius);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border: 1px solid var(--border);
+            margin-bottom: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            overflow-x: auto;
+            scrollbar-width: none;
         }
 
-        .admin-section h3 {
-            font-size: 1.45rem;
+        .admin-nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn i {
+            font-size: 1.05rem;
+        }
+
+        .tab-btn:hover {
             color: var(--primary);
-            border-bottom: 2px solid var(--border);
+            background: #f1f5f9;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(6, 78, 59, 0.25);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --------------------------------------------------------------------------
+           CARDS & FORMS
+           -------------------------------------------------------------------------- */
+        .admin-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.75rem;
+            border: 1.5px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 1.75rem;
+        }
+
+        .card-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
             padding-bottom: 0.75rem;
-            margin-bottom: 1.5rem;
+            border-bottom: 1.5px solid var(--border);
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .card-title {
+            font-size: 1.45rem;
+            font-weight: 800;
+            color: var(--primary);
             display: flex;
             align-items: center;
             gap: 0.6rem;
@@ -196,12 +403,20 @@
 
         .form-grid {
             display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.25rem;
+        }
+
+        .form-grid-2 {
+            display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+            gap: 1.25rem;
         }
 
         .form-group {
-            margin-bottom: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
         }
 
         .form-group.full-width {
@@ -209,123 +424,324 @@
         }
 
         label {
-            display: block;
             font-weight: 700;
-            font-size: 1rem;
-            margin-bottom: 0.4rem;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-family: inherit;
             font-size: 1.05rem;
-            background: #f8fafc;
+            color: var(--text);
         }
 
-        input:focus, textarea:focus {
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 1.1rem;
+            background: #fff;
+            color: var(--text);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
+            box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.15);
         }
 
-        .btn-submit {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: #fff;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
+        /* --------------------------------------------------------------------------
+           BUTTONS
+           -------------------------------------------------------------------------- */
+        .btn-action {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            transition: all 0.2s;
+            padding: 0.65rem 1.4rem;
+            border-radius: var(--radius-sm);
+            font-size: 1.12rem;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
         }
 
-        .btn-submit:hover {
-            background: var(--gold);
-            color: #000;
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
         }
 
-        /* Inquiries Table */
-        .inquiry-table-wrap {
+        .btn-primary:hover {
+            background: var(--primary-light);
+            box-shadow: 0 4px 12px rgba(6, 78, 59, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        /* --------------------------------------------------------------------------
+           TABLES
+           -------------------------------------------------------------------------- */
+        .table-responsive {
+            width: 100%;
             overflow-x: auto;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 1rem;
+            text-align: right;
+            background: #fff;
+            font-size: 1.05rem;
         }
 
         th, td {
             padding: 0.85rem 1rem;
             border-bottom: 1px solid var(--border);
-            text-align: right;
         }
 
         th {
             background: #f8fafc;
             color: var(--primary);
-            font-weight: 700;
+            font-weight: 800;
+            white-space: nowrap;
         }
 
-        .action-del-btn {
-            background: #fee2e2;
-            color: #b91c1c;
-            border: 1px solid #fecaca;
-            padding: 0.25rem 0.75rem;
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .table-btn {
+            padding: 0.25rem 0.65rem;
             border-radius: 6px;
+            border: none;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: all 0.15s ease;
         }
 
-        .action-del-btn:hover {
-            background: #b91c1c;
+        .table-btn-edit {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .table-btn-edit:hover {
+            background: #0284c7;
             color: #fff;
         }
 
+        .table-btn-del {
+            background: var(--danger-bg);
+            color: var(--danger);
+        }
+
+        .table-btn-del:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        .badge-tag {
+            padding: 0.2rem 0.65rem;
+            border-radius: 50px;
+            font-size: 0.88rem;
+            font-weight: 800;
+            display: inline-block;
+        }
+
+        .badge-success { background: var(--success-bg); color: var(--success); }
+        .badge-danger { background: var(--danger-bg); color: var(--danger); }
+        .badge-gold { background: #fef3c7; color: #92400e; }
+        .badge-info { background: var(--info-bg); color: #0369a1; }
+
+        /* --------------------------------------------------------------------------
+           MODALS (EDIT & CHANGE PIN)
+           -------------------------------------------------------------------------- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 1.5rem;
+        }
+
+        .modal-overlay.hidden {
+            display: none;
+        }
+
+        .modal-box {
+            background: #fff;
+            max-width: 580px;
+            width: 100%;
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 2px solid var(--border);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h3 {
+            font-size: 1.45rem;
+            color: var(--primary);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        /* --------------------------------------------------------------------------
+           SEARCH & FILTER BAR
+           -------------------------------------------------------------------------- */
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-search-box {
+            position: relative;
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .filter-search-box input {
+            padding-right: 2.25rem;
+        }
+
+        .filter-search-box i {
+            position: absolute;
+            right: 0.85rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* --------------------------------------------------------------------------
+           PRINT STYLES
+           -------------------------------------------------------------------------- */
+        @media print {
+            .login-overlay, .admin-header, .admin-nav-tabs, .btn-action, .card-title-row button, .filter-bar, .modal-overlay {
+                display: none !important;
+            }
+            body {
+                background: #fff !important;
+                color: #000 !important;
+            }
+            .admin-container {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .tab-content {
+                display: block !important;
+            }
+            .admin-card {
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                page-break-inside: avoid;
+            }
+        }
+
+        /* --------------------------------------------------------------------------
+           RESPONSIVE DESIGN (MOBILE ADAPTATION)
+           -------------------------------------------------------------------------- */
         @media (max-width: 900px) {
-            .admin-stats-grid {
-                grid-template-columns: 1fr 1fr;
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
             .form-grid {
                 grid-template-columns: 1fr;
             }
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
             .admin-header {
                 flex-direction: column;
                 gap: 0.85rem;
-                text-align: center;
                 padding: 1rem 0.85rem;
+                text-align: center;
             }
-            .admin-header h2 {
-                font-size: 1.25rem;
+            .header-brand {
+                flex-direction: column;
+                text-align: center;
             }
             .header-actions {
                 width: 100%;
                 justify-content: center;
             }
-            .admin-stats-grid {
+            .stats-grid {
                 grid-template-columns: 1fr;
-                gap: 0.75rem;
+                gap: 0.85rem;
             }
             .admin-container {
-                padding: 1rem 0.85rem;
+                padding: 1rem 0.75rem;
             }
-            .admin-section {
-                padding: 1.25rem;
+            .admin-card {
+                padding: 1.25rem 1rem;
+            }
+            .card-title-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .card-title-row button, .card-title-row .btn-action {
+                width: 100%;
+                justify-content: center;
             }
             .login-card {
-                padding: 1.5rem 1rem;
-                margin-inline: 0.85rem;
+                padding: 1.75rem 1.25rem;
             }
         }
     </style>
@@ -340,25 +756,109 @@
             <div class="logo">
                 <i class="fa-solid fa-lock"></i>
             </div>
-            <h2 style="font-size: 1.6rem; color: var(--primary); margin-bottom: 0.5rem;">
+            <h2 style="font-size: 1.6rem; color: var(--primary); margin-bottom: 0.35rem;">
                 ایڈمنسٹریشن لاگ ان
             </h2>
-            <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+            <p style="font-size: 0.98rem; color: var(--text-muted); margin-bottom: 1.5rem;">
                 مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات (مردان)
             </p>
 
             <form id="adminLoginForm">
-                <div class="form-group" style="text-align: right;">
-                    <label for="adminPin">سیکیورٹی پاس کوڈ / پن کوڈ درج کریں:</label>
-                    <input type="password" id="adminPin" placeholder="ڈیفالٹ پن: 1234" required style="text-align: center; letter-spacing: 4px; font-size: 1.3rem;">
+                <div class="form-group" style="text-align: right; margin-bottom: 1.25rem;">
+                    <label for="adminPin">خفیہ سیکیورٹی پن کوڈ (PIN) درج کریں:</label>
+                    <input type="password" id="adminPin" placeholder="ڈیفالٹ پن: 1234" required style="text-align: center; letter-spacing: 5px; font-size: 1.4rem;">
                 </div>
-                <button type="submit" class="btn-submit" style="width: 100%; justify-content: center;">
+                <button type="submit" class="btn-action btn-primary" style="width: 100%; justify-content: center; padding: 0.75rem;">
                     <i class="fa-solid fa-right-to-bracket"></i> لاگ ان کریں
                 </button>
             </form>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">
-                (سسٹم کا ڈیفالٹ لاگ ان پن: <strong>1234</strong> ہے)
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1.25rem;">
+                (شروع میں سسٹم کا ڈیفالٹ لاگ ان پن: <strong>1234</strong> ہے جسے آپ اندر تبدیل کر سکتے ہیں)
             </p>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         CHANGE PIN MODAL
+         ==================================================================== -->
+    <div class="modal-overlay hidden" id="changePinModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-key"></i> سیکیورٹی پن کوڈ تبدیل کریں</h3>
+                <button type="button" class="modal-close" onclick="closeChangePinModal()">&times;</button>
+            </div>
+            <form id="changePinForm">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="currPin">موجودہ پن کوڈ (Current PIN):</label>
+                    <input type="password" id="currPin" required style="text-align: center; letter-spacing: 3px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="newPin">نیا پن کوڈ (New Secret PIN):</label>
+                    <input type="password" id="newPin" placeholder="مثلاً: 5678" required style="text-align: center; letter-spacing: 3px;">
+                </div>
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="confirmNewPin">نئے پن کوڈ کی تصدیق کریں:</label>
+                    <input type="password" id="confirmNewPin" required style="text-align: center; letter-spacing: 3px;">
+                </div>
+                <div style="display:flex; gap:1rem;">
+                    <button type="submit" class="btn-action btn-primary" style="flex:1; justify-content:center;">
+                        <i class="fa-solid fa-floppy-disk"></i> نیا پن کوڈ محفوظ کریں
+                    </button>
+                    <button type="button" class="btn-action btn-secondary" onclick="closeChangePinModal()">
+                        منسوخ کریں
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         EDIT ENTRY MODAL (INCOME / EXPENSE)
+         ==================================================================== -->
+    <div class="modal-overlay hidden" id="editEntryModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="editModalTitle"><i class="fa-solid fa-pen-to-square"></i> اندراج میں ترمیم کریں</h3>
+                <button type="button" class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="editEntryForm">
+                <input type="hidden" id="editType">
+                <input type="hidden" id="editId">
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="editDate">تاریخ:</label>
+                    <input type="date" id="editDate" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="editTitle" id="editTitleLabel">نام / مد:</label>
+                    <input type="text" id="editTitle" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label for="editAmount">رقم (پاکستانی روپے PKR):</label>
+                    <input type="number" id="editAmount" required min="1">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;" id="editCategoryGroup">
+                    <label for="editCategory">کیٹیگری / مد:</label>
+                    <input type="text" id="editCategory">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label for="editNotes">تفصیل / بل نمبر / رسید:</label>
+                    <textarea id="editNotes" rows="2"></textarea>
+                </div>
+
+                <div style="display:flex; gap:1rem;">
+                    <button type="submit" class="btn-action btn-primary" style="flex:1; justify-content:center;">
+                        <i class="fa-solid fa-check"></i> تبدیلیاں محفوظ کریں
+                    </button>
+                    <button type="button" class="btn-action btn-secondary" onclick="closeEditModal()">
+                        منسوخ کریں
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -366,14 +866,27 @@
          ADMIN HEADER
          ==================================================================== -->
     <header class="admin-header">
-        <h2>
-            <i class="fa-solid fa-mosque"></i> ایڈمن ڈیش بورڈ - مدرسہ عربیہ سعد بن معاذ و مدرسہ ام سلیم للبنات
-        </h2>
+        <div class="header-brand">
+            <div class="emblem">
+                <i class="fa-solid fa-mosque"></i>
+            </div>
+            <div>
+                <h1>مدرسہ عربیہ سعد بن معاذ و مدرسہ ام سلیم للبنات</h1>
+                <p>کھاتہ و ایڈمنسٹریشن پورٹل — مردان</p>
+            </div>
+        </div>
+
         <div class="header-actions">
-            <a href="index.html" class="btn-link" target="_blank">
+            <a href="index.html" class="btn-header" target="_blank" title="اصل ویب سائٹ دیکھیں">
                 <i class="fa-solid fa-globe"></i> ویب سائٹ دیکھیں
             </a>
-            <button id="logoutBtn" class="btn-link" style="background:#dc2626; border:none; cursor:pointer;">
+            <button type="button" class="btn-header btn-header-gold" onclick="openChangePinModal()">
+                <i class="fa-solid fa-key"></i> پن تبدیل کریں
+            </button>
+            <button type="button" class="btn-header" onclick="window.print()" title="پورٹل کی رپورٹ پرنٹ کریں">
+                <i class="fa-solid fa-print"></i> پرنٹ
+            </button>
+            <button type="button" id="logoutBtn" class="btn-header btn-header-danger">
                 <i class="fa-solid fa-power-off"></i> لاگ آؤٹ
             </button>
         </div>
@@ -384,189 +897,451 @@
          ==================================================================== -->
     <main class="admin-container">
 
-        <!-- Top Stats Row -->
-        <div class="admin-stats-grid">
-            <div class="stat-card">
-                <div class="val" id="statTarget">8,500,000</div>
-                <div class="lbl">کل درکار بجٹ (روپے)</div>
+        <!-- Executive Financial KPI Cards -->
+        <div class="stats-grid">
+            <!-- 1. Total Income -->
+            <div class="stat-card stat-income">
+                <div class="stat-header">
+                    <span class="stat-lbl">کل جمع شدہ آمدن / عطیات</span>
+                    <div class="stat-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                </div>
+                <div class="stat-val" id="kpiIncome">PKR 0</div>
+                <div class="stat-sub">تمام موصولہ فنڈز کا مجموعہ</div>
             </div>
-            <div class="stat-card">
-                <div class="val" id="statRaised" style="color:#059669;">5,120,000</div>
-                <div class="lbl">جمع شدہ عطیات (روپے)</div>
+
+            <!-- 2. Total Deductions / Expenses -->
+            <div class="stat-card stat-expense">
+                <div class="stat-header">
+                    <span class="stat-lbl">کل کٹوتیاں و اخراجات</span>
+                    <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+                </div>
+                <div class="stat-val" id="kpiExpense">PKR 0</div>
+                <div class="stat-sub">تعمیراتی سامان و مزدوروں کی ادائیگی</div>
             </div>
-            <div class="stat-card">
-                <div class="val" id="statProgress" style="color:var(--gold);">60%</div>
-                <div class="lbl">زیرِ تعمیر کام کی پیشرفت</div>
+
+            <!-- 3. Net Balance Available -->
+            <div class="stat-card stat-balance">
+                <div class="stat-header">
+                    <span class="stat-lbl">موجودہ خالص خزانہ / بیلنس</span>
+                    <div class="stat-icon"><i class="fa-solid fa-vault"></i></div>
+                </div>
+                <div class="stat-val" id="kpiBalance">PKR 0</div>
+                <div class="stat-sub">آمدن منہا اخراجات (دستیاب رقم)</div>
             </div>
-            <div class="stat-card">
-                <div class="val" id="statInquiries">0</div>
-                <div class="lbl">موصول شدہ پیغامات/عطیات</div>
+
+            <!-- 4. Target Budget -->
+            <div class="stat-card stat-target">
+                <div class="stat-header">
+                    <span class="stat-lbl">کل درکار تعمیراتی ہدف</span>
+                    <div class="stat-icon"><i class="fa-solid fa-bullseye"></i></div>
+                </div>
+                <div class="stat-val" id="kpiTarget">PKR 8,500,000</div>
+                <div class="stat-sub" id="kpiRemaining">باقی درکار: PKR 0</div>
             </div>
         </div>
 
-        <!-- 1. Financial & Construction Progress Settings -->
-        <section class="admin-section">
-            <h3><i class="fa-solid fa-coins"></i> مالی بجٹ و تعمیراتی پیشرفت اپڈیٹ کریں</h3>
-            <form id="financeForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="inputTarget">کل درکار رقم / ہدف (PKR):</label>
-                        <input type="number" id="inputTarget" required>
+        <!-- Navigation Tabs -->
+        <nav class="admin-nav-tabs">
+            <button type="button" class="tab-btn active" data-tab="tab-income">
+                <i class="fa-solid fa-circle-plus text-success"></i> رقم جمع کرنا (آمدن)
+            </button>
+            <button type="button" class="tab-btn" data-tab="tab-expense">
+                <i class="fa-solid fa-circle-minus text-danger"></i> رقم کی کٹوتی (اخراجات)
+            </button>
+            <button type="button" class="tab-btn" data-tab="tab-overview">
+                <i class="fa-solid fa-chart-pie"></i> بجٹ و تعمیراتی ہدف
+            </button>
+            <button type="button" class="tab-btn" data-tab="tab-accounts">
+                <i class="fa-solid fa-address-book"></i> آفیشل اکاؤنٹس سیٹنگز
+            </button>
+            <button type="button" class="tab-btn" data-tab="tab-inquiries">
+                <i class="fa-solid fa-inbox"></i> موصولہ پیغامات و رسیدیں (<span id="inquiryCountBadge">0</span>)
+            </button>
+        </nav>
+
+        <!-- ================================================================
+             TAB 1: INCOME / DONATIONS (رقم جمع کرنا)
+             ================================================================ -->
+        <section class="tab-content active" id="tab-income">
+            <!-- Add New Donation Form -->
+            <div class="admin-card">
+                <div class="card-title-row">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-circle-plus text-success"></i> نیا عطیہ / آمدن درج کریں
+                    </h2>
+                    <span class="badge-tag badge-success">خودکار کھاتہ میں جمع ہوگا</span>
+                </div>
+
+                <form id="addIncomeForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="incDonor">مخیر / عطیہ دہندہ کا نامِ گرامی *</label>
+                            <input type="text" id="incDonor" placeholder="مثلاً: الحاج سمیع اللہ خان" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="incAmount">عطیہ کی رقم (روپے PKR) *</label>
+                            <input type="number" id="incAmount" placeholder="مثلاً: 50000" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="incDate">تاریخ وصولی *</label>
+                            <input type="date" id="incDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="incCategory">تعاون کی مد *</label>
+                            <select id="incCategory" required>
+                                <option value="صدقہ جاریہ (تعمیراتی فنڈ)">صدقہ جاریہ (تعمیراتی فنڈ)</option>
+                                <option value="زیرِ تعمیر مسجد معز اللہ خان">زیرِ تعمیر مسجد معز اللہ خان</option>
+                                <option value="مدرسہ ام سلیم للبنات">مدرسہ ام سلیم للبنات</option>
+                                <option value="سیمنٹ و اینٹوں کا فنڈ">سیمنٹ و اینٹوں کا فنڈ</option>
+                                <option value="واجب الاداء زکوٰۃ">واجب الاداء زکوٰۃ</option>
+                                <option value="کفالتِ طلبہ و اساتذہ">کفالتِ طلبہ و اساتذہ</option>
+                                <option value="عمومی نفلی صدقہ">عمومی نفلی صدقہ</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="incMethod">ادائیگی کا ذریعہ *</label>
+                            <select id="incMethod" required>
+                                <option value="ایزی پیسہ (0319-9532091: محمد امین)">ایزی پیسہ (محمد امین)</option>
+                                <option value="میزان بینک (Meezan Bank)">میزان بینک</option>
+                                <option value="نقد رقم (کیش برائے مہتمم)">نقد رقم (کیش)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="incReceipt">رسید نمبر / ٹرانزیکشن ID (اختیاری)</label>
+                            <input type="text" id="incReceipt" placeholder="مثلاً: TID: 982318" dir="ltr">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="incNotes">اضافی تفصیل یا دعائیہ کلمات (اختیاری):</label>
+                            <input type="text" id="incNotes" placeholder="مثلاً: چھت کی ڈھلائی کے لیے صدقہ جاریہ">
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="inputRaised">اب تک موصول شدہ عطیات (PKR):</label>
-                        <input type="number" id="inputRaised" required>
+                    <div style="margin-top: 1.25rem; display: flex; gap: 1rem;">
+                        <button type="submit" class="btn-action btn-success">
+                            <i class="fa-solid fa-plus"></i> رقم کھاتے میں جمع کریں
+                        </button>
                     </div>
+                </form>
+            </div>
 
-                    <div class="form-group">
-                        <label for="inputProgress">زیرِ تعمیر حصے کی موجودہ تکمیل (%):</label>
-                        <input type="number" id="inputProgress" min="0" max="100" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputArea">کل اراضی / رقبہ:</label>
-                        <input type="text" id="inputArea" value="36 مرلے" required>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="inputAnnouncement">اہم اعلان / مستقبل کا منصوبہ (ٹکر میسج):</label>
-                        <textarea id="inputAnnouncement" rows="2" required></textarea>
+            <!-- Income Ledger Table -->
+            <div class="admin-card">
+                <div class="card-title-row">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-list-check"></i> جمع شدہ عطیات کا مکمل کھاتہ (لیجر)
+                    </h2>
+                    <div>
+                        <button type="button" class="btn-action btn-secondary" onclick="exportData('income')">
+                            <i class="fa-solid fa-file-arrow-down"></i> آمدن کھاتہ ڈاؤن لوڈ کریں
+                        </button>
                     </div>
                 </div>
 
-                <button type="submit" class="btn-submit">
-                    <i class="fa-solid fa-floppy-disk"></i> مالی معلومات محفوظ کریں
-                </button>
-            </form>
-        </section>
-
-        <!-- 2. Official Contact & Payment Accounts Settings -->
-        <section class="admin-section">
-            <h3><i class="fa-solid fa-address-book"></i> آفیشل رابطہ اور ایزی پیسہ / بینک اکاؤنٹس</h3>
-            <form id="contactAccountsForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="inputMohtamim">مہتمم صاحب کا نام:</label>
-                        <input type="text" id="inputMohtamim" value="حضرت مولانا عجب خان صاحب" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputMohtamimPhone">مہتمم صاحب کا رابطہ نمبر (صرف رابطہ و واٹس ایپ):</label>
-                        <input type="text" id="inputMohtamimPhone" value="0340-9132851" required dir="ltr">
-                        <small style="color: #b91c1c; font-weight: bold; font-size: 0.85rem;">(نوٹ: اس نمبر پر کوئی بینک یا ایزی پیسہ اکاؤنٹ نہیں ہے، یہ صرف کال اور معلومات کے لیے ہے)</small>
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="inputAddress">مدرسہ کا پتہ (مردان):</label>
-                        <input type="text" id="inputAddress" value="خاندان ٹاؤن، جمال گڑھی، ساولدھیر روڈ، مردان (خیبر پختونخوا)" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEasyNumber">عطیات ایزی پیسہ نمبر:</label>
-                        <input type="text" id="inputEasyNumber" value="0319-9532091" required dir="ltr">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputEasyTitle">ایزی پیسہ اکاؤنٹ ہولڈر کا نام (ٹائٹل):</label>
-                        <input type="text" id="inputEasyTitle" value="محمد امین" required>
-                        <small style="color: #047857; font-weight: bold; font-size: 0.85rem;">(صرف ایزی پیسہ فعال ہے - جیز کیش موجود نہیں ہے)</small>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputBankName">بینک کا نام:</label>
-                        <input type="text" id="inputBankName" value="میزان بینک (Meezan Bank)">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputBankTitle">بینک اکاؤنٹ ٹائٹل:</label>
-                        <input type="text" id="inputBankTitle" value="Madrasa Saad Bin Muadh">
-                    </div>
-
-                    <div class="form-group full-width">
-                        <label for="inputBankIban">بینک IBAN نمبر:</label>
-                        <input type="text" id="inputBankIban" value="PK45MEZN0001234567890123" dir="ltr">
+                <div class="filter-bar">
+                    <div class="filter-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchIncome" placeholder="نام، مد یا رسید نمبر سے تلاش کریں..." oninput="filterLedger('income')">
                     </div>
                 </div>
 
-                <button type="submit" class="btn-submit">
-                    <i class="fa-solid fa-floppy-disk"></i> اکاؤنٹس کی تفصیلات محفوظ کریں
-                </button>
-            </form>
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>نامِ مخیر</th>
+                                <th>رقم (PKR)</th>
+                                <th>تعاون کی مد</th>
+                                <th>طریقہ</th>
+                                <th>رسید / TID</th>
+                                <th>تفصیل</th>
+                                <th>کارروائی</th>
+                            </tr>
+                        </thead>
+                        <tbody id="incomeTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </section>
 
-        <!-- 3. Inquiries & Donor Messages -->
-        <section class="admin-section">
-            <h3><i class="fa-solid fa-inbox"></i> موصول شدہ عطیات، رسیدیں اور پیغامات</h3>
-            <div class="inquiry-table-wrap">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>تاریخ و وقت</th>
-                            <th>نامِ گرامی</th>
-                            <th>رابطہ نمبر</th>
-                            <th>تعاون کی مد</th>
-                            <th>عطیہ کی رقم و طریقہ</th>
-                            <th>تفصیل / حوالہ نمبر</th>
-                            <th>کارروائی</th>
-                        </tr>
-                    </thead>
-                    <tbody id="inquiryTableBody">
-                        <tr>
-                            <td colspan="7" style="text-align: center; color: var(--text-muted);">کوئی پیغام ابھی موصول نہیں ہوا۔</td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- ================================================================
+             TAB 2: EXPENSES / DEDUCTIONS (رقم کی کٹوتی)
+             ================================================================ -->
+        <section class="tab-content" id="tab-expense">
+            <!-- Add New Expense Form -->
+            <div class="admin-card">
+                <div class="card-title-row">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-circle-minus text-danger"></i> نئی کٹوتی / اخراجات درج کریں
+                    </h2>
+                    <span class="badge-tag badge-danger">خزانے سے کٹوتی کی جائے گی</span>
+                </div>
+
+                <form id="addExpenseForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="expTitle">مدِ کٹوتی / خرچ کی تفصیل *</label>
+                            <input type="text" id="expTitle" placeholder="مثلاً: سیمنٹ کی 200 بوریاں یا مستری مزدوری" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expAmount">کٹوتی کی رقم (روپے PKR) *</label>
+                            <input type="number" id="expAmount" placeholder="مثلاً: 270000" min="1" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expDate">تاریخِ ادائیگی *</label>
+                            <input type="date" id="expDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expCategory">اخراجات کی کیٹیگری *</label>
+                            <select id="expCategory" required>
+                                <option value="سیمنٹ، ریت و بجری">سیمنٹ، ریت و بجری</option>
+                                <option value="لوہا و سریا">لوہا و سریا</option>
+                                <option value="اینٹیں و بلاکس">اینٹیں و بلاکس</option>
+                                <option value="مستری و مزدوروں کی اجرت">مستری و مزدوروں کی اجرت</option>
+                                <option value="بجلی، وائرنگ و پنکھے">بجلی، وائرنگ و پنکھے</option>
+                                <option value="پائپ، سینیٹری و وضوخانہ">پائپ، سینیٹری و وضوخانہ</option>
+                                <option value="مسجد معز اللہ خان کا خرچ">مسجد معز اللہ خان کا خرچ</option>
+                                <option value="متفرق انتظامی اخراجات">متفرق انتظامی اخراجات</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expBill">بل نمبر / دکاندار کا نام</label>
+                            <input type="text" id="expBill" placeholder="مثلاً: بل نمبر 412 (خیبر ہارڈویئر)">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="expPaidBy">ادا کنندہ / نگران کا نام</label>
+                            <input type="text" id="expPaidBy" placeholder="مثلاً: حضرت مولانا عجب خان صاحب">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="expNotes">اضافی نوٹ / رسید کی تفصیل:</label>
+                            <input type="text" id="expNotes" placeholder="مثلاً: گراؤنڈ فلور کی چھت کی ڈھلائی کے لیے">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.25rem; display: flex; gap: 1rem;">
+                        <button type="submit" class="btn-action btn-danger">
+                            <i class="fa-solid fa-minus"></i> کٹوتی کھاتے میں درج کریں
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Expense Ledger Table -->
+            <div class="admin-card">
+                <div class="card-title-row">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-receipt"></i> کٹوتیوں اور تعمیراتی اخراجات کا مکمل کھاتہ
+                    </h2>
+                    <div>
+                        <button type="button" class="btn-action btn-secondary" onclick="exportData('expense')">
+                            <i class="fa-solid fa-file-arrow-down"></i> اخراجات کھاتہ ڈاؤن لوڈ کریں
+                        </button>
+                    </div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="filter-search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchExpense" placeholder="مد، دکاندار یا بل نمبر سے تلاش کریں..." oninput="filterLedger('expense')">
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>مدِ خرچ</th>
+                                <th>کٹوتی رقم (PKR)</th>
+                                <th>کیٹیگری</th>
+                                <th>بل نمبر / دکان</th>
+                                <th>ادا کنندہ</th>
+                                <th>نوٹ</th>
+                                <th>کارروائی</th>
+                            </tr>
+                        </thead>
+                        <tbody id="expenseTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             TAB 3: OVERVIEW & TARGET SETTINGS (بجٹ و اعلانات)
+             ================================================================ -->
+        <section class="tab-content" id="tab-overview">
+            <div class="admin-card">
+                <div class="card-title-row">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-sliders"></i> مالیاتی ہدف و تعمیراتی صورتحال اپڈیٹ کریں
+                    </h2>
+                    <span class="badge-tag badge-gold">ویب سائٹ کے ہوم پیج پر نظر آئے گا</span>
+                </div>
+
+                <form id="overviewSettingsForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="setTarget">کل درکار تعمیراتی بجٹ / ہدف (PKR):</label>
+                            <input type="number" id="setTarget" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="setProgress">زیرِ تعمیر کام کی پیشرفت (%):</label>
+                            <input type="number" id="setProgress" min="0" max="100" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="setArea">مدرسے کا رقبہ:</label>
+                            <input type="text" id="setArea" value="36 مرلے" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="setAnnouncement">اہم اعلان / ٹکر میسج (Ticker Announcement):</label>
+                            <textarea id="setAnnouncement" rows="2" required></textarea>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.25rem;">
+                        <button type="submit" class="btn-action btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i> بجٹ کی معلومات محفوظ کریں
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             TAB 4: PAYMENT ACCOUNTS & MOHTAMIM (بینک و رابطہ)
+             ================================================================ -->
+        <section class="tab-content" id="tab-accounts">
+            <div class="admin-card">
+                <div class="card-title-row">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-building-columns"></i> آفیشل اکاؤنٹس اور مہتمم صاحب کا رابطہ
+                    </h2>
+                    <span class="badge-tag badge-info">ویب سائٹ پر عطیہ دہندگان کے لیے</span>
+                </div>
+
+                <form id="accountsSettingsForm">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label for="setMohtamimName">مہتمم صاحب کا نامِ گرامی:</label>
+                            <input type="text" id="setMohtamimName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="setMohtamimPhone">مہتمم رابطہ نمبر (صرف کال و واٹس ایپ):</label>
+                            <input type="text" id="setMohtamimPhone" required dir="ltr">
+                            <small style="color:#b91c1c; font-weight:700;">(ضروری نوٹ: اس نمبر پر کوئی بینک یا ایزی پیسہ اکاؤنٹ نہیں ہے)</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="setEasyNumber">عطیات ایزی پیسہ نمبر:</label>
+                            <input type="text" id="setEasyNumber" required dir="ltr">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="setEasyTitle">ایزی پیسہ اکاؤنٹ ہولڈر کا نام (ٹائٹل):</label>
+                            <input type="text" id="setEasyTitle" required>
+                            <small style="color:#047857; font-weight:700;">(صرف ایزی پیسہ فعال ہے — جیز کیش موجود نہیں ہے)</small>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="setAddress">مدرسے کا مستقل پتہ (مردان رسید کے مطابق):</label>
+                            <input type="text" id="setAddress" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="setBankName">بینک کا نام:</label>
+                            <input type="text" id="setBankName">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="setBankTitle">بینک اکاؤنٹ ٹائٹل:</label>
+                            <input type="text" id="setBankTitle">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="setBankIban">بینک IBAN نمبر:</label>
+                            <input type="text" id="setBankIban" dir="ltr">
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem;">
+                        <button type="submit" class="btn-action btn-primary">
+                            <i class="fa-solid fa-floppy-disk"></i> اکاؤنٹس کی معلومات اپڈیٹ کریں
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- ================================================================
+             TAB 5: INQUIRIES & ONLINE SLIPS (موصولہ پیغامات)
+             ================================================================ -->
+        <section class="tab-content" id="tab-inquiries">
+            <div class="admin-card">
+                <div class="card-title-row">
+                    <h2 class="card-title">
+                        <i class="fa-solid fa-envelope-open-text"></i> ویب سائٹ سے موصولہ عطیات، رسیدیں اور پیغامات
+                    </h2>
+                    <button type="button" class="btn-action btn-secondary" onclick="clearAllInquiries()">
+                        <i class="fa-solid fa-trash-can"></i> تمام پیغامات صاف کریں
+                    </button>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>تاریخ</th>
+                                <th>نامِ مخیر</th>
+                                <th>رابطہ نمبر</th>
+                                <th>تعاون کی مد</th>
+                                <th>رقم / طریقہ</th>
+                                <th>پیغام / TID</th>
+                                <th>کارروائی</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inquiriesTableBody">
+                            <!-- Populated dynamically -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
     </main>
 
-    <!-- Admin JavaScript Logic -->
+    <!-- ====================================================================
+         ADMIN LOGIC JAVASCRIPT
+         ==================================================================== -->
     <script>
         const AUTH_KEY = 'madrasa_admin_auth';
+        const PIN_KEY = 'madrasa_admin_pin';
         const DATA_KEY = 'madrasa_saad_bin_muadh_data';
+        const INCOME_KEY = 'madrasa_income_ledger';
+        const EXPENSE_KEY = 'madrasa_expense_ledger';
         const INQUIRIES_KEY = 'madrasa_inquiries';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            checkAuth();
-            loadFormData();
-            loadInquiries();
-
-            // Forms
-            document.getElementById('adminLoginForm').addEventListener('submit', handleLogin);
-            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-            document.getElementById('financeForm').addEventListener('submit', handleFinanceSave);
-            document.getElementById('contactAccountsForm').addEventListener('submit', handleAccountsSave);
-        });
-
-        function checkAuth() {
-            const isAuth = sessionStorage.getItem(AUTH_KEY);
-            const modal = document.getElementById('loginModal');
-            if (isAuth === 'true') {
-                modal.classList.add('hidden');
-            } else {
-                modal.classList.remove('hidden');
-            }
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            const pin = document.getElementById('adminPin').value.trim();
-            if (pin === '1234' || pin === 'admin') {
-                sessionStorage.setItem(AUTH_KEY, 'true');
-                document.getElementById('loginModal').classList.add('hidden');
-            } else {
-                alert("غلط پن کوڈ! دوبارہ کوشش فرمائیں۔ (ڈیفالٹ پن: 1234)");
-            }
-        }
-
-        function handleLogout() {
-            sessionStorage.removeItem(AUTH_KEY);
-            location.reload();
-        }
-
-        const DEFAULT_ADMIN_DATA = {
+        // Initial default configuration
+        const DEFAULT_DATA = {
             institutionName: "مدرسہ عربیہ سعد بن معاذ للبنین و مدرسہ ام سلیم للبنات",
             masjidName: "زیرِ تعمیر مسجد معز اللہ خان",
             mohtamim: "حضرت مولانا عجب خان صاحب",
@@ -579,96 +1354,492 @@
             bankAccountTitle: "Madrasa Saad Bin Muadh",
             bankIban: "PK45MEZN0001234567890123",
             targetDonation: 8500000,
-            raisedDonation: 5120000,
             underConstructionProgress: 60,
             announcement: "مستقبل کا شاندار منصوبہ: اگلا بنات کا باقاعدہ کیمپس (مدرسہ ام سلیم للبنات) اور بنین کا جدید تجوید سسٹم جلد شروع ہو رہا ہے۔"
         };
 
-        function getStoredData() {
+        // Realistic initial sample ledger entries
+        const DEFAULT_INCOME = [
+            { id: 1, date: "2026-10-18", donor: "الحاج سمیع اللہ خان", amount: 500000, category: "صدقہ جاریہ (تعمیراتی فنڈ)", method: "میزان بینک", receiptNo: "TID: 982318", notes: "مسجد معز اللہ خان کی چھت کے لیے" },
+            { id: 2, date: "2026-10-19", donor: "محترم طارق محمود", amount: 150000, category: "زیرِ تعمیر مسجد معز اللہ خان", method: "ایزی پیسہ", receiptNo: "TID: 472911", notes: "برائے ایصالِ ثواب والدین" },
+            { id: 3, date: "2026-10-20", donor: "فضل الرحمن صاحب", amount: 75000, category: "سیمنٹ و اینٹوں کا فنڈ", method: "نقد رقم (کیش)", receiptNo: "رسید # 1042", notes: "50 بوریاں سیمنٹ کی مد میں" }
+        ];
+
+        const DEFAULT_EXPENSES = [
+            { id: 1, date: "2026-10-15", title: "سیمنٹ کی 200 بوریاں (فوجی سیمنٹ)", amount: 270000, category: "سیمنٹ، ریت و بجری", billNo: "بل # 412 (خیبر ہارڈویئر)", paidBy: "عجب خان", notes: "گراؤنڈ فلور کی دیواروں کے لیے" },
+            { id: 2, date: "2026-10-17", title: "لنٹر کے لیے سریا (60 گریڈ)", amount: 480000, category: "لوہا و سریا", billNo: "بل # 891 (مردان سٹیل)", paidBy: "امین صاحب", notes: "مسجد کے مین ہال کی چھت کا سریا" },
+            { id: 3, date: "2026-10-19", title: "مستری اور مزدوروں کی ہفتہ وار اجرت", amount: 65000, category: "مستری و مزدوروں کی اجرت", billNo: "رسید # 55", paidBy: "عجب خان", notes: "ہفتہ وار مکمل اجرت ادا کر دی گئی" },
+            { id: 4, date: "2026-10-20", title: "ریت کی 4 ٹرالیاں اور بجری", amount: 85000, category: "سیمنٹ، ریت و بجری", billNo: "بل # 203", paidBy: "عجب خان", notes: "چھت کی کنکریٹ مکسنگ کے لیے" }
+        ];
+
+        /* ==========================================================================
+           INITIALIZATION & AUTH
+           ========================================================================== */
+        document.addEventListener('DOMContentLoaded', () => {
+            initAuth();
+            initTabs();
+            setDefaultDates();
+            loadAllData();
+
+            // Forms bindings
+            document.getElementById('adminLoginForm').addEventListener('submit', handleLogin);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            document.getElementById('changePinForm').addEventListener('submit', handleChangePin);
+            document.getElementById('addIncomeForm').addEventListener('submit', handleAddIncome);
+            document.getElementById('addExpenseForm').addEventListener('submit', handleAddExpense);
+            document.getElementById('editEntryForm').addEventListener('submit', handleSaveEdit);
+            document.getElementById('overviewSettingsForm').addEventListener('submit', handleSaveOverview);
+            document.getElementById('accountsSettingsForm').addEventListener('submit', handleSaveAccounts);
+        });
+
+        function getStoredPin() {
+            return localStorage.getItem(PIN_KEY) || '1234';
+        }
+
+        function initAuth() {
+            const isAuth = sessionStorage.getItem(AUTH_KEY);
+            const modal = document.getElementById('loginModal');
+            if (isAuth === 'true') {
+                modal.classList.add('hidden');
+            } else {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const pin = document.getElementById('adminPin').value.trim();
+            const savedPin = getStoredPin();
+
+            if (pin === savedPin || pin === '1234' || pin === 'admin') {
+                sessionStorage.setItem(AUTH_KEY, 'true');
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('adminPin').value = '';
+            } else {
+                alert("غلط پن کوڈ! دوبارہ کوشش فرمائیں۔ (ڈیفالٹ پن: 1234 ہے)");
+            }
+        }
+
+        function handleLogout() {
+            if (confirm("کیا آپ واقعی ایڈمن پورٹل سے لاگ آؤٹ ہونا چاہتے ہیں؟")) {
+                sessionStorage.removeItem(AUTH_KEY);
+                location.reload();
+            }
+        }
+
+        function openChangePinModal() {
+            document.getElementById('changePinModal').classList.remove('hidden');
+            document.getElementById('currPin').value = '';
+            document.getElementById('newPin').value = '';
+            document.getElementById('confirmNewPin').value = '';
+        }
+
+        function closeChangePinModal() {
+            document.getElementById('changePinModal').classList.add('hidden');
+        }
+
+        function handleChangePin(e) {
+            e.preventDefault();
+            const curr = document.getElementById('currPin').value.trim();
+            const newP = document.getElementById('newPin').value.trim();
+            const conf = document.getElementById('confirmNewPin').value.trim();
+            const savedPin = getStoredPin();
+
+            if (curr !== savedPin && curr !== '1234') {
+                alert("موجودہ پن کوڈ درست نہیں ہے!");
+                return;
+            }
+
+            if (newP.length < 4) {
+                alert("نیا پن کوڈ کم از کم 4 ہندسوں پر مشتمل ہونا چاہیے!");
+                return;
+            }
+
+            if (newP !== conf) {
+                alert("نیا پن کوڈ اور تصدیقی پن کوڈ آپس میں میل نہیں کھاتے!");
+                return;
+            }
+
+            localStorage.setItem(PIN_KEY, newP);
+            alert("مبارک ہو! آپ کا نیا سیکیورٹی پن کوڈ کامیابی کے ساتھ محفوظ ہو گیا ہے۔");
+            closeChangePinModal();
+        }
+
+        function setDefaultDates() {
+            const today = new Date().toISOString().split('T')[0];
+            const inc = document.getElementById('incDate');
+            const exp = document.getElementById('expDate');
+            if (inc) inc.value = today;
+            if (exp) exp.value = today;
+        }
+
+        /* ==========================================================================
+           TABS NAVIGATION
+           ========================================================================== */
+        function initTabs() {
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    btns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    document.querySelectorAll('.tab-content').forEach(tc => {
+                        tc.classList.remove('active');
+                    });
+                    const target = document.getElementById(tabId);
+                    if (target) target.classList.add('active');
+                });
+            });
+        }
+
+        /* ==========================================================================
+           DATA LOADING & REFRESH
+           ========================================================================== */
+        function getMadrasaData() {
             const raw = localStorage.getItem(DATA_KEY);
             if (raw) {
-                try { return { ...DEFAULT_ADMIN_DATA, ...JSON.parse(raw) }; } catch (e) {}
+                try { return { ...DEFAULT_DATA, ...JSON.parse(raw) }; } catch (e) {}
             }
-            return DEFAULT_ADMIN_DATA;
+            return DEFAULT_DATA;
         }
 
-        function loadFormData() {
-            const data = getStoredData();
-
-            // Stats
-            document.getElementById('statTarget').textContent = (data.targetDonation || 8500000).toLocaleString();
-            document.getElementById('statRaised').textContent = (data.raisedDonation || 5120000).toLocaleString();
-            document.getElementById('statProgress').textContent = (data.underConstructionProgress || 60) + '%';
-
-            // Financial Inputs
-            document.getElementById('inputTarget').value = data.targetDonation || 8500000;
-            document.getElementById('inputRaised').value = data.raisedDonation || 5120000;
-            document.getElementById('inputProgress').value = data.underConstructionProgress || 60;
-            document.getElementById('inputArea').value = data.area || "36 مرلے";
-            document.getElementById('inputAnnouncement').value = data.announcement || "";
-
-            // Accounts & Contact Inputs
-            document.getElementById('inputMohtamim').value = data.mohtamim || "حضرت مولانا عجب خان صاحب";
-            document.getElementById('inputMohtamimPhone').value = data.mohtamimPhone || "0340-9132851";
-            document.getElementById('inputAddress').value = data.address || "خاندان ٹاؤن، جمال گڑھی، ساولدھیر روڈ، مردان (خیبر پختونخوا)";
-            document.getElementById('inputEasyNumber').value = data.easyPaisaNumber || "0319-9532091";
-            document.getElementById('inputEasyTitle').value = data.easyPaisaTitle || "محمد امین";
-            document.getElementById('inputBankName').value = data.bankName || "میزان بینک (Meezan Bank)";
-            document.getElementById('inputBankTitle').value = data.bankAccountTitle || "Madrasa Saad Bin Muadh";
-            document.getElementById('inputBankIban').value = data.bankIban || "PK45MEZN0001234567890123";
+        function getIncomeLedger() {
+            const raw = localStorage.getItem(INCOME_KEY);
+            if (raw) {
+                try { return JSON.parse(raw); } catch (e) {}
+            }
+            localStorage.setItem(INCOME_KEY, JSON.stringify(DEFAULT_INCOME));
+            return DEFAULT_INCOME;
         }
 
-        function handleFinanceSave(e) {
-            e.preventDefault();
-            const data = getStoredData();
-            data.targetDonation = parseInt(document.getElementById('inputTarget').value) || 0;
-            data.raisedDonation = parseInt(document.getElementById('inputRaised').value) || 0;
-            data.underConstructionProgress = parseInt(document.getElementById('inputProgress').value) || 0;
-            data.area = document.getElementById('inputArea').value.trim();
-            data.announcement = document.getElementById('inputAnnouncement').value.trim();
+        function getExpenseLedger() {
+            const raw = localStorage.getItem(EXPENSE_KEY);
+            if (raw) {
+                try { return JSON.parse(raw); } catch (e) {}
+            }
+            localStorage.setItem(EXPENSE_KEY, JSON.stringify(DEFAULT_EXPENSES));
+            return DEFAULT_EXPENSES;
+        }
 
+        function loadAllData() {
+            const data = getMadrasaData();
+            const income = getIncomeLedger();
+            const expenses = getExpenseLedger();
+
+            // Calculate totals
+            const totalIncome = income.reduce((acc, item) => acc + (Number(item.amount) || 0), 0);
+            const totalExpense = expenses.reduce((acc, item) => acc + (Number(item.amount) || 0), 0);
+            const netBalance = totalIncome - totalExpense;
+            const target = Number(data.targetDonation) || 8500000;
+            const remaining = Math.max(0, target - totalIncome);
+
+            // Update KPIs
+            document.getElementById('kpiIncome').textContent = `PKR ${totalIncome.toLocaleString('en-US')}`;
+            document.getElementById('kpiExpense').textContent = `PKR ${totalExpense.toLocaleString('en-US')}`;
+            document.getElementById('kpiBalance').textContent = `PKR ${netBalance.toLocaleString('en-US')}`;
+            document.getElementById('kpiTarget').textContent = `PKR ${target.toLocaleString('en-US')}`;
+            document.getElementById('kpiRemaining').textContent = `باقی درکار: PKR ${remaining.toLocaleString('en-US')}`;
+
+            // Save synced values for main website
+            data.raisedDonation = totalIncome;
+            data.totalExpense = totalExpense;
+            data.netBalance = netBalance;
             localStorage.setItem(DATA_KEY, JSON.stringify(data));
-            loadFormData();
-            alert("مالی و تعمیراتی معلومات محفوظ ہو چکی ہیں اور ویب سائٹ پر اپڈیٹ ہو گئی ہیں۔");
+
+            // Populate Overview Form
+            document.getElementById('setTarget').value = target;
+            document.getElementById('setProgress').value = data.underConstructionProgress || 60;
+            document.getElementById('setArea').value = data.area || "36 مرلے";
+            document.getElementById('setAnnouncement').value = data.announcement || "";
+
+            // Populate Accounts Form
+            document.getElementById('setMohtamimName').value = data.mohtamim || "حضرت مولانا عجب خان صاحب";
+            document.getElementById('setMohtamimPhone').value = data.mohtamimPhone || "0340-9132851";
+            document.getElementById('setAddress').value = data.address || "خاندان ٹاؤن، جمال گڑھی، ساولدھیر روڈ، مردان";
+            document.getElementById('setEasyNumber').value = data.easyPaisaNumber || "0319-9532091";
+            document.getElementById('setEasyTitle').value = data.easyPaisaTitle || "محمد امین";
+            document.getElementById('setBankName').value = data.bankName || "میزان بینک (Meezan Bank)";
+            document.getElementById('setBankTitle').value = data.bankAccountTitle || "Madrasa Saad Bin Muadh";
+            document.getElementById('setBankIban').value = data.bankIban || "PK45MEZN0001234567890123";
+
+            // Render tables
+            renderIncomeTable(income);
+            renderExpenseTable(expenses);
+            loadInquiries();
         }
 
-        function handleAccountsSave(e) {
-            e.preventDefault();
-            const data = getStoredData();
-            data.mohtamim = document.getElementById('inputMohtamim').value.trim();
-            data.mohtamimPhone = document.getElementById('inputMohtamimPhone').value.trim();
-            data.address = document.getElementById('inputAddress').value.trim();
-            data.easyPaisaNumber = document.getElementById('inputEasyNumber').value.trim();
-            data.easyPaisaTitle = document.getElementById('inputEasyTitle').value.trim();
-            data.bankName = document.getElementById('inputBankName').value.trim();
-            data.bankAccountTitle = document.getElementById('inputBankTitle').value.trim();
-            data.bankIban = document.getElementById('inputBankIban').value.trim();
-
-            localStorage.setItem(DATA_KEY, JSON.stringify(data));
-            loadFormData();
-            alert("آفیشل رابطہ اور اکاؤنٹس کی تفصیلات کامیابی کے ساتھ محفوظ ہو گئی ہیں۔");
-        }
-
-        function loadInquiries() {
-            const list = JSON.parse(localStorage.getItem(INQUIRIES_KEY) || '[]');
-            document.getElementById('statInquiries').textContent = list.length;
-            const tbody = document.getElementById('inquiryTableBody');
-
+        /* ==========================================================================
+           RENDER TABLES
+           ========================================================================== */
+        function renderIncomeTable(list) {
+            const tbody = document.getElementById('incomeTableBody');
             if (!list || list.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">ابھی تک کوئی نیا میسج یا عطیہ کی رسید موصول نہیں ہوئی۔</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:1.5rem; color:var(--text-muted);">ابھی تک کوئی عطیہ درج نہیں ہوا۔</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => `
+                <tr>
+                    <td dir="ltr" style="font-weight:700;">${item.date}</td>
+                    <td><strong>${item.donor}</strong></td>
+                    <td style="color:var(--success); font-weight:800; font-family:var(--font-en)!important;">${Number(item.amount).toLocaleString('en-US')} روپے</td>
+                    <td><span class="badge-tag badge-success">${item.category || 'عطیہ'}</span></td>
+                    <td style="font-size:0.95rem;">${item.method || '-'}</td>
+                    <td dir="ltr" style="font-size:0.95rem;">${item.receiptNo || '-'}</td>
+                    <td style="font-size:0.95rem; max-width:200px;">${item.notes || '-'}</td>
+                    <td>
+                        <div style="display:flex; gap:0.35rem;">
+                            <button type="button" class="table-btn table-btn-edit" onclick="openEditModal('income', ${item.id})">
+                                <i class="fa-solid fa-pen"></i> ایڈٹ
+                            </button>
+                            <button type="button" class="table-btn table-btn-del" onclick="deleteEntry('income', ${item.id})">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderExpenseTable(list) {
+            const tbody = document.getElementById('expenseTableBody');
+            if (!list || list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:1.5rem; color:var(--text-muted);">ابھی تک کوئی کٹوتی یا خرچ درج نہیں ہوا۔</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = list.map(item => `
+                <tr>
+                    <td dir="ltr" style="font-weight:700;">${item.date}</td>
+                    <td><strong>${item.title}</strong></td>
+                    <td style="color:var(--danger); font-weight:800; font-family:var(--font-en)!important;">${Number(item.amount).toLocaleString('en-US')} روپے</td>
+                    <td><span class="badge-tag badge-danger">${item.category || 'کٹوتی'}</span></td>
+                    <td style="font-size:0.95rem;">${item.billNo || '-'}</td>
+                    <td style="font-size:0.95rem;">${item.paidBy || '-'}</td>
+                    <td style="font-size:0.95rem; max-width:200px;">${item.notes || '-'}</td>
+                    <td>
+                        <div style="display:flex; gap:0.35rem;">
+                            <button type="button" class="table-btn table-btn-edit" onclick="openEditModal('expense', ${item.id})">
+                                <i class="fa-solid fa-pen"></i> ایڈٹ
+                            </button>
+                            <button type="button" class="table-btn table-btn-del" onclick="deleteEntry('expense', ${item.id})">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        /* ==========================================================================
+           ADD NEW ENTRIES (INCOME & EXPENSE)
+           ========================================================================== */
+        function handleAddIncome(e) {
+            e.preventDefault();
+            const income = getIncomeLedger();
+            const newItem = {
+                id: Date.now(),
+                donor: document.getElementById('incDonor').value.trim(),
+                amount: Number(document.getElementById('incAmount').value) || 0,
+                date: document.getElementById('incDate').value,
+                category: document.getElementById('incCategory').value,
+                method: document.getElementById('incMethod').value,
+                receiptNo: document.getElementById('incReceipt').value.trim(),
+                notes: document.getElementById('incNotes').value.trim()
+            };
+
+            income.unshift(newItem);
+            localStorage.setItem(INCOME_KEY, JSON.stringify(income));
+            document.getElementById('addIncomeForm').reset();
+            setDefaultDates();
+            loadAllData();
+            alert(`ماشاءاللہ! ${newItem.amount.toLocaleString('en-US')} روپے کا عطیہ کامیابی کے ساتھ کھاتے میں جمع ہو گیا ہے۔`);
+        }
+
+        function handleAddExpense(e) {
+            e.preventDefault();
+            const expenses = getExpenseLedger();
+            const newItem = {
+                id: Date.now(),
+                title: document.getElementById('expTitle').value.trim(),
+                amount: Number(document.getElementById('expAmount').value) || 0,
+                date: document.getElementById('expDate').value,
+                category: document.getElementById('expCategory').value,
+                billNo: document.getElementById('expBill').value.trim(),
+                paidBy: document.getElementById('expPaidBy').value.trim(),
+                notes: document.getElementById('expNotes').value.trim()
+            };
+
+            expenses.unshift(newItem);
+            localStorage.setItem(EXPENSE_KEY, JSON.stringify(expenses));
+            document.getElementById('addExpenseForm').reset();
+            setDefaultDates();
+            loadAllData();
+            alert(`کٹوتی اندراج محفوظ ہو گیا! ${newItem.amount.toLocaleString('en-US')} روپے اخراجات کھاتے میں درج کر دیے گئے۔`);
+        }
+
+        /* ==========================================================================
+           EDIT & DELETE ENTRIES
+           ========================================================================== */
+        function openEditModal(type, id) {
+            const list = (type === 'income') ? getIncomeLedger() : getExpenseLedger();
+            const item = list.find(x => x.id === id);
+            if (!item) return;
+
+            document.getElementById('editType').value = type;
+            document.getElementById('editId').value = id;
+            document.getElementById('editDate').value = item.date;
+            document.getElementById('editAmount').value = item.amount;
+            document.getElementById('editCategory').value = item.category || '';
+            document.getElementById('editNotes').value = item.notes || '';
+
+            if (type === 'income') {
+                document.getElementById('editModalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> عطیہ کی تفصیل میں ترمیم کریں';
+                document.getElementById('editTitleLabel').textContent = "مخیر کا نامِ گرامی:";
+                document.getElementById('editTitle').value = item.donor || '';
+            } else {
+                document.getElementById('editModalTitle').innerHTML = '<i class="fa-solid fa-pen-to-square"></i> کٹوتی / خرچ کی تفصیل میں ترمیم کریں';
+                document.getElementById('editTitleLabel').textContent = "مدِ کٹوتی / عنوان:";
+                document.getElementById('editTitle').value = item.title || '';
+            }
+
+            document.getElementById('editEntryModal').classList.remove('hidden');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editEntryModal').classList.add('hidden');
+        }
+
+        function handleSaveEdit(e) {
+            e.preventDefault();
+            const type = document.getElementById('editType').value;
+            const id = Number(document.getElementById('editId').value);
+            const list = (type === 'income') ? getIncomeLedger() : getExpenseLedger();
+            const index = list.findIndex(x => x.id === id);
+
+            if (index === -1) return;
+
+            list[index].date = document.getElementById('editDate').value;
+            list[index].amount = Number(document.getElementById('editAmount').value) || 0;
+            list[index].category = document.getElementById('editCategory').value.trim();
+            list[index].notes = document.getElementById('editNotes').value.trim();
+
+            if (type === 'income') {
+                list[index].donor = document.getElementById('editTitle').value.trim();
+                localStorage.setItem(INCOME_KEY, JSON.stringify(list));
+            } else {
+                list[index].title = document.getElementById('editTitle').value.trim();
+                localStorage.setItem(EXPENSE_KEY, JSON.stringify(list));
+            }
+
+            closeEditModal();
+            loadAllData();
+            alert("تبدیلیاں کامیابی کے ساتھ محفوظ ہو گئی ہیں!");
+        }
+
+        function deleteEntry(type, id) {
+            const list = (type === 'income') ? getIncomeLedger() : getExpenseLedger();
+            const item = list.find(x => x.id === id);
+            if (!item) return;
+
+            const name = (type === 'income') ? item.donor : item.title;
+            if (confirm(`کیا آپ واقعی "${name}" کا یہ اندراج کھاتے سے حذف (Delete) کرنا چاہتے ہیں؟`)) {
+                const updated = list.filter(x => x.id !== id);
+                if (type === 'income') {
+                    localStorage.setItem(INCOME_KEY, JSON.stringify(updated));
+                } else {
+                    localStorage.setItem(EXPENSE_KEY, JSON.stringify(updated));
+                }
+                loadAllData();
+            }
+        }
+
+        /* ==========================================================================
+           FILTER / SEARCH LEDGERS
+           ========================================================================== */
+        function filterLedger(type) {
+            if (type === 'income') {
+                const query = document.getElementById('searchIncome').value.toLowerCase();
+                const list = getIncomeLedger();
+                const filtered = list.filter(item => 
+                    (item.donor && item.donor.toLowerCase().includes(query)) ||
+                    (item.category && item.category.toLowerCase().includes(query)) ||
+                    (item.receiptNo && item.receiptNo.toLowerCase().includes(query)) ||
+                    (item.notes && item.notes.toLowerCase().includes(query))
+                );
+                renderIncomeTable(filtered);
+            } else {
+                const query = document.getElementById('searchExpense').value.toLowerCase();
+                const list = getExpenseLedger();
+                const filtered = list.filter(item => 
+                    (item.title && item.title.toLowerCase().includes(query)) ||
+                    (item.category && item.category.toLowerCase().includes(query)) ||
+                    (item.billNo && item.billNo.toLowerCase().includes(query)) ||
+                    (item.paidBy && item.paidBy.toLowerCase().includes(query))
+                );
+                renderExpenseTable(filtered);
+            }
+        }
+
+        /* ==========================================================================
+           SETTINGS SAVING
+           ========================================================================== */
+        function handleSaveOverview(e) {
+            e.preventDefault();
+            const data = getMadrasaData();
+            data.targetDonation = Number(document.getElementById('setTarget').value) || 8500000;
+            data.underConstructionProgress = Number(document.getElementById('setProgress').value) || 60;
+            data.area = document.getElementById('setArea').value.trim();
+            data.announcement = document.getElementById('setAnnouncement').value.trim();
+
+            localStorage.setItem(DATA_KEY, JSON.stringify(data));
+            loadAllData();
+            alert("بجٹ و تعمیراتی ہدف کی معلومات کامیابی کے ساتھ محفوظ ہو گئی ہیں!");
+        }
+
+        function handleSaveAccounts(e) {
+            e.preventDefault();
+            const data = getMadrasaData();
+            data.mohtamim = document.getElementById('setMohtamimName').value.trim();
+            data.mohtamimPhone = document.getElementById('setMohtamimPhone').value.trim();
+            data.address = document.getElementById('setAddress').value.trim();
+            data.easyPaisaNumber = document.getElementById('setEasyNumber').value.trim();
+            data.easyPaisaTitle = document.getElementById('setEasyTitle').value.trim();
+            data.bankName = document.getElementById('setBankName').value.trim();
+            data.bankAccountTitle = document.getElementById('setBankTitle').value.trim();
+            data.bankIban = document.getElementById('setBankIban').value.trim();
+
+            localStorage.setItem(DATA_KEY, JSON.stringify(data));
+            loadAllData();
+            alert("آفیشل اکاؤنٹس اور مہتمم صاحب کا رابطہ کامیابی کے ساتھ اپڈیٹ ہو گیا ہے!");
+        }
+
+        /* ==========================================================================
+           INQUIRIES MANAGEMENT
+           ========================================================================== */
+        function loadInquiries() {
+            const raw = localStorage.getItem(INQUIRIES_KEY);
+            const list = raw ? JSON.parse(raw) : [];
+            const badge = document.getElementById('inquiryCountBadge');
+            if (badge) badge.textContent = list.length;
+
+            const tbody = document.getElementById('inquiriesTableBody');
+            if (!list || list.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:var(--text-muted);">ابھی تک کوئی نیا آن لائن میسج موصول نہیں ہوا۔</td></tr>`;
                 return;
             }
 
             tbody.innerHTML = list.map((inq, idx) => `
                 <tr>
-                    <td>${inq.date || '-'}</td>
+                    <td dir="ltr" style="font-weight:700;">${inq.date || '-'}</td>
                     <td><strong>${inq.name || '-'}</strong></td>
                     <td dir="ltr">${inq.phone || '-'}</td>
-                    <td><span style="background:#ecfdf5; color:#047857; padding:0.2rem 0.5rem; border-radius:4px; font-weight:700; font-size:0.9rem;">${inq.type || '-'}</span></td>
-                    <td style="color:#d97706; font-weight:800;">${inq.amount || '-'}</td>
-                    <td style="max-width:240px; font-size:0.95rem;">${inq.message || '-'}</td>
+                    <td><span class="badge-tag badge-success">${inq.type || 'عطیہ'}</span></td>
+                    <td style="color:var(--gold); font-weight:800;">${inq.amount || '-'}</td>
+                    <td style="font-size:0.95rem; max-width:240px;">${inq.message || '-'}</td>
                     <td>
-                        <button class="action-del-btn" onclick="deleteInquiry(${idx})">
+                        <button type="button" class="table-btn table-btn-del" onclick="deleteInquiry(${idx})">
                             <i class="fa-solid fa-trash"></i> ڈیلیٹ
                         </button>
                     </td>
@@ -676,15 +1847,32 @@
             `).join('');
         }
 
-        window.deleteInquiry = function(index) {
-            if (confirm("کیا آپ واقعی اس رسید یا پیغام کو حذف کرنا چاہتے ہیں؟")) {
-                const list = JSON.parse(localStorage.getItem(INQUIRIES_KEY) || '[]');
-                list.splice(index, 1);
-                localStorage.setItem(INQUIRIES_KEY, JSON.stringify(list));
+        function deleteInquiry(idx) {
+            const list = JSON.parse(localStorage.getItem(INQUIRIES_KEY) || '[]');
+            list.splice(idx, 1);
+            localStorage.setItem(INQUIRIES_KEY, JSON.stringify(list));
+            loadInquiries();
+        }
+
+        function clearAllInquiries() {
+            if (confirm("کیا آپ واقعی تمام آن لائن پیغامات صاف کرنا چاہتے ہیں؟")) {
+                localStorage.setItem(INQUIRIES_KEY, JSON.stringify([]));
                 loadInquiries();
             }
-        };
+        }
+
+        /* ==========================================================================
+           EXPORT BACKUP
+           ========================================================================== */
+        function exportData(type) {
+            const list = (type === 'income') ? getIncomeLedger() : getExpenseLedger();
+            const fileName = (type === 'income') ? `Madrasa_Income_Ledger_${new Date().toISOString().split('T')[0]}.json` : `Madrasa_Expense_Ledger_${new Date().toISOString().split('T')[0]}.json`;
+            const blob = new Blob([JSON.stringify(list, null, 2)], { type: 'application/json' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName;
+            a.click();
+        }
     </script>
 </body>
 </html>
-
